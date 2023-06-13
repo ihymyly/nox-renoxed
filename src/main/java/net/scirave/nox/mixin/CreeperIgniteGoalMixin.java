@@ -14,7 +14,6 @@ package net.scirave.nox.mixin;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.CreeperIgniteGoal;
 import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.damage.EntityDamageSource;
 import net.minecraft.entity.mob.CreeperEntity;
 import net.scirave.nox.config.NoxConfig;
 import org.jetbrains.annotations.Nullable;

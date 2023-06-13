@@ -22,7 +22,7 @@ import net.scirave.nox.util.Nox$CreeperBreachInterface;
 
 import java.util.EnumSet;
 
-public class Nox$CreeperBreachGoal extends Goal {
+public class Nox$CreeperBreachGoal extends Goal{
 
     private final CreeperEntity creeper;
 
@@ -38,7 +38,6 @@ public class Nox$CreeperBreachGoal extends Goal {
         }
         return false;
     }
-
     public boolean withinReach(Vec3d pos, LivingEntity target) {
         double yDiff = Math.abs(pos.y - target.getY());
         return yDiff <= NoxConfig.creeperBreachDistance;

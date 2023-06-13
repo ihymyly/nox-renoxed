@@ -13,7 +13,6 @@ package net.scirave.nox.mixin;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.Material;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.mob.GuardianEntity;
 import net.minecraft.state.property.Properties;

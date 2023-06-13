@@ -13,7 +13,6 @@ package net.scirave.nox.mixin;
 
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.damage.EntityDamageSource;
 import net.minecraft.entity.mob.BlazeEntity;
 import net.scirave.nox.config.NoxConfig;
 import org.spongepowered.asm.mixin.Final;
