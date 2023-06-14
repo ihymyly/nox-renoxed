@@ -14,7 +14,10 @@ package net.scirave.nox.mixin;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.BowAttackGoal;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.damage.DamageType;
+import net.minecraft.entity.damage.DamageTypes;
 import net.minecraft.entity.mob.HostileEntity;
+import net.minecraft.registry.entry.RegistryEntry;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -45,8 +48,7 @@ public class BowAttackGoalMixin {
         LivingEntity target = this.actor.getTarget();
         if (target == null) return;
 
-        DamageSource fakeSource = EntityDamageSource.mob(actor);
-        fakeSource.setProjectile();
+        DamageSource fakeSource = new DamageSource((RegistryEntry<DamageType>) DamageTypes.MOB_PROJECTILE);
 
         if (windup > -1) {
             if (windup > 0) {

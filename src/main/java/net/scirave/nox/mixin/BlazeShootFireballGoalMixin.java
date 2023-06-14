@@ -13,7 +13,11 @@ package net.scirave.nox.mixin;
 
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.damage.DamageType;
+import net.minecraft.entity.damage.DamageTypes;
 import net.minecraft.entity.mob.BlazeEntity;
+import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.scirave.nox.config.NoxConfig;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -59,8 +63,7 @@ public abstract class BlazeShootFireballGoalMixin {
             LivingEntity target = this.blaze.getTarget();
             if (target == null) return;
 
-            DamageSource fakeSource = EntityDamageSource.mob(this.blaze);
-            fakeSource.setProjectile();
+            DamageSource fakeSource = new DamageSource((RegistryEntry<DamageType>) DamageTypes.MOB_PROJECTILE);
 
             if (windup > -1) {
                 if (windup > 0) {

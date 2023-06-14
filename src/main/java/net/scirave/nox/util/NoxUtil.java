@@ -31,6 +31,7 @@ import net.minecraft.item.ArmorItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.Identifier;
@@ -49,9 +50,9 @@ import java.util.Map;
 
 public class NoxUtil {
 
-    public static final TagKey<Block> NOX_ALWAYS_MINE = TagKey.of(Registry.BLOCK_KEY, new Identifier("c", "nox_always_mine"));
-    public static final TagKey<Block> NOX_CANT_MINE = TagKey.of(Registry.BLOCK_KEY, new Identifier("c", "nox_cant_mine"));
-    public static final TagKey<Item> FIREPROOF = TagKey.of(Registry.ITEM_KEY, new Identifier("c:fireproof"));
+    public static final TagKey<Block> NOX_ALWAYS_MINE = TagKey.of(RegistryKeys.BLOCK, new Identifier("c", "nox_always_mine"));
+    public static final TagKey<Block> NOX_CANT_MINE = TagKey.of(RegistryKeys.BLOCK, new Identifier("c", "nox_cant_mine"));
+    public static final TagKey<Item> FIREPROOF = TagKey.of(RegistryKeys.ITEM, new Identifier("c:fireproof"));
     private final static ItemStack WOOD_PICKAXE = Items.WOODEN_PICKAXE.getDefaultStack();
     private final static ItemStack WOOD_AXE = Items.WOODEN_AXE.getDefaultStack();
     private final static ItemStack WOOD_SHOVEL = Items.WOODEN_SHOVEL.getDefaultStack();
@@ -80,15 +81,15 @@ public class NoxUtil {
         double o = target.getBodyY(0.5D) - l;
         double p = target.getZ() - m;
         if (!dragon.isSilent()) {
-            dragon.world.syncWorldEvent(null, 1017, dragon.getBlockPos(), 0);
+            dragon.getWorld().syncWorldEvent(null, 1017, dragon.getBlockPos(), 0);
         }
 
-        DragonFireballEntity dragonFireballEntity = new DragonFireballEntity(dragon.world, dragon, n, o, p);
+        DragonFireballEntity dragonFireballEntity = new DragonFireballEntity(dragon.getWorld(), dragon, n, o, p);
         dragonFireballEntity.refreshPositionAndAngles(k, l, m, 0.0F, 0.0F);
         dragonFireballEntity.powerX *= 5;
         dragonFireballEntity.powerY *= 5;
         dragonFireballEntity.powerZ *= 5;
-        dragon.world.spawnEntity(dragonFireballEntity);
+        dragon.getWorld().spawnEntity(dragonFireballEntity);
     }
 
     public static Item randomWeapon(Random random) {

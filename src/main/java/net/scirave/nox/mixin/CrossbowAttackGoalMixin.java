@@ -17,9 +17,12 @@ import net.minecraft.entity.CrossbowUser;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.CrossbowAttackGoal;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.damage.DamageType;
+import net.minecraft.entity.damage.DamageTypes;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.projectile.ProjectileUtil;
 import net.minecraft.item.Items;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.util.Hand;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -58,8 +61,7 @@ public class CrossbowAttackGoalMixin {
         if (hand != null && EnchantmentHelper.getLevel(Enchantments.PIERCING, this.actor.getStackInHand(hand)) > 0)
             return;
 
-        DamageSource fakeSource = EntityDamageSource.mob(actor);
-        fakeSource.setProjectile();
+        DamageSource fakeSource = new DamageSource((RegistryEntry<DamageType>) DamageTypes.MOB_PROJECTILE);
 
         if (windup > -1) {
             if (windup > 0) {

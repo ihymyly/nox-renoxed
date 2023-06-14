@@ -34,7 +34,7 @@ public class Nox$CreeperBreachGoal extends Goal{
     public boolean canStart() {
         if (((Nox$CreeperBreachInterface) creeper).nox$isAllowedToBreachWalls()) {
             LivingEntity living = this.creeper.getTarget();
-            return living != null && living.world.getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING) && shouldBreach(living);
+            return living != null && living.getWorld().getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING) && shouldBreach(living);
         }
         return false;
     }

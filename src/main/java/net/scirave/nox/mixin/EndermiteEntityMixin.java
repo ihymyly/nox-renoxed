@@ -42,7 +42,7 @@ public abstract class EndermiteEntityMixin extends HostileEntityMixin {
 
     @Override
     public void nox$onSuccessfulAttack(LivingEntity target) {
-        if (NoxConfig.endermiteAttacksMakeTargetTeleport && target.world instanceof ServerWorld serverWorld) {
+        if (NoxConfig.endermiteAttacksMakeTargetTeleport && target.getWorld() instanceof ServerWorld serverWorld) {
             double d = target.getX();
             double e = target.getY();
             double f = target.getZ();

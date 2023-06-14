@@ -70,7 +70,7 @@ public class Nox$MineBlockGoal extends Goal {
         int yMod = 1;
         BlockPos elected;
 
-        if (isBreakable(this.owner.world, origin.up())) {
+        if (isBreakable(this.owner.getWorld(), origin.up())) {
             return origin.up();
         }
 
@@ -82,59 +82,59 @@ public class Nox$MineBlockGoal extends Goal {
 
         if (this.owner.getBlockY() > victim.getBlockY()) {
             yMod = 0;
-            if (isBreakable(this.owner.world, origin.down())) {
+            if (isBreakable(this.owner.getWorld(), origin.down())) {
                 return origin.down();
             }
             if (absXDiff == absZDiff) {
-                elected = searchForBlock(this.owner.world, origin);
+                elected = searchForBlock(this.owner.getWorld(), origin);
                 if (elected != null) {
                     return elected;
                 }
             }
         } else if (this.owner.getBlockY() < victim.getBlockY()) {
             yMod = 2;
-            if (isBreakable(this.owner.world, origin.up(2))) {
+            if (isBreakable(this.owner.getWorld(), origin.up(2))) {
                 return origin.up(2);
             }
             if (absXDiff == absZDiff) {
-                elected = searchForBlock(this.owner.world, origin.up());
+                elected = searchForBlock(this.owner.getWorld(), origin.up());
                 if (elected != null) {
                     return elected;
                 }
             }
         }
 
-        if (isBreakable(this.owner.world, origin.up().up(yMod - 1))) {
+        if (isBreakable(this.owner.getWorld(), origin.up().up(yMod - 1))) {
             return origin.up();
         }
 
         if (absXDiff > absZDiff) {
             if (xDiff > 0) {
-                elected = searchForBlock(this.owner.world, origin.east().up(yMod));
+                elected = searchForBlock(this.owner.getWorld(), origin.east().up(yMod));
             } else {
-                elected = searchForBlock(this.owner.world, origin.west().up(yMod));
+                elected = searchForBlock(this.owner.getWorld(), origin.west().up(yMod));
             }
             if (elected != null) {
                 return elected;
             }
             if (zDiff > 0) {
-                elected = searchForBlock(this.owner.world, origin.south().up(yMod));
+                elected = searchForBlock(this.owner.getWorld(), origin.south().up(yMod));
             } else {
-                elected = searchForBlock(this.owner.world, origin.north().up(yMod));
+                elected = searchForBlock(this.owner.getWorld(), origin.north().up(yMod));
             }
         } else {
             if (zDiff > 0) {
-                elected = searchForBlock(this.owner.world, origin.south().up(yMod));
+                elected = searchForBlock(this.owner.getWorld(), origin.south().up(yMod));
             } else {
-                elected = searchForBlock(this.owner.world, origin.north().up(yMod));
+                elected = searchForBlock(this.owner.getWorld(), origin.north().up(yMod));
             }
             if (elected != null) {
                 return elected;
             }
             if (xDiff > 0) {
-                elected = searchForBlock(this.owner.world, origin.east().up(yMod));
+                elected = searchForBlock(this.owner.getWorld(), origin.east().up(yMod));
             } else {
-                elected = searchForBlock(this.owner.world, origin.west().up(yMod));
+                elected = searchForBlock(this.owner.getWorld(), origin.west().up(yMod));
             }
         }
 
@@ -156,7 +156,7 @@ public class Nox$MineBlockGoal extends Goal {
             return false;
         }
 
-        if (this.owner.age > 60 && (this.owner.isOnGround() || this.owner.isTouchingWater()) && victim.world.getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING)) {
+        if (this.owner.age > 60 && (this.owner.isOnGround() || this.owner.isTouchingWater()) && victim.getWorld().getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING)) {
 
             if (this.targetSeen != victim) {
                 if (this.owner.canSee(victim)) {
@@ -207,19 +207,19 @@ public class Nox$MineBlockGoal extends Goal {
         ((Nox$MiningInterface) this.owner).nox$setMining(false);
         this.mineTick = 0;
         if (this.posToMine != null) {
-            this.owner.world.setBlockBreakingInfo(this.owner.getId(), this.posToMine, -1);
+            this.owner.getWorld().setBlockBreakingInfo(this.owner.getId(), this.posToMine, -1);
         }
         this.posToMine = null;
     }
 
     @Override
     public void tick() {
-        if (this.posToMine == null || !isBreakable(this.owner.world, this.posToMine)) {
+        if (this.posToMine == null || !isBreakable(this.owner.getWorld(), this.posToMine)) {
             this.mineTick = 0;
             stop();
             return;
         }
-        float f = getAdjustedHardness(this.owner.world, this.posToMine) * (float) (mineTick + 1);
+        float f = getAdjustedHardness(this.owner.getWorld(), this.posToMine) * (float) (mineTick + 1);
         int k = (int) (f * 10.0F);
         this.mineTick++;
         this.owner.getNavigation().stop();
@@ -228,9 +228,9 @@ public class Nox$MineBlockGoal extends Goal {
         if (this.mineTick % 5 == 0) {
             this.owner.swingHand(Hand.MAIN_HAND);
         }
-        this.owner.world.setBlockBreakingInfo(this.owner.getId(), this.posToMine, k);
+        this.owner.getWorld().setBlockBreakingInfo(this.owner.getId(), this.posToMine, k);
         if (f > 1.0F) {
-            this.owner.world.breakBlock(this.posToMine, true, this.owner);
+            this.owner.getWorld().breakBlock(this.posToMine, true, this.owner);
         }
     }
 

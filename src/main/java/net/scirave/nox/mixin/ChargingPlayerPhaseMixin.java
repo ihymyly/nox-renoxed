@@ -21,6 +21,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.Heightmap;
 import net.minecraft.world.gen.feature.EndPortalFeature;
+import net.minecraft.world.gen.feature.Feature;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -62,8 +63,8 @@ public abstract class ChargingPlayerPhaseMixin extends AbstractPhase {
 
     @Inject(method = "serverTick", at = @At(value = "HEAD"))
     public void nox$enderDragonBetterCharging(CallbackInfo ci) {
-        BlockPos blockPos = this.dragon.world.getTopPosition(Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, new BlockPos(EndPortalFeature.ORIGIN));
-        PlayerEntity player = this.dragon.world.getClosestPlayer(RANGE_PREDICATE, this.dragon, blockPos.getX(), blockPos.getY(), blockPos.getZ());
+        BlockPos blockPos = this.dragon.getWorld().getTopPosition(Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, new BlockPos(EndPortalFeature.offsetOrigin(null)));
+        PlayerEntity player = this.dragon.getWorld().getClosestPlayer(RANGE_PREDICATE, this.dragon, blockPos.getX(), blockPos.getY(), blockPos.getZ());
         if (player != null) {
             this.setPathTarget(player.getPos());
 

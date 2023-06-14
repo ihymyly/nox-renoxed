@@ -32,14 +32,14 @@ public abstract class GuardianEntityMixin extends HostileEntityMixin {
     if (NoxConfig.guardiansPlaceWaterOnDeath && !this.world.isClient) {
             BlockPos pos = this.getBlockPos();
             BlockState state = this.world.getBlockState(pos);
-            if (state != nox$WATER && state.getMaterial().isReplaceable()) {
+            if (state != nox$WATER && state.isReplaceable()) {
                 if (NoxConfig.guardianDeathLeavesWaterSource)
                     this.world.setBlockState(pos, nox$WATER);
                 else {
                     // order matters
                     state = this.world.getBlockState(pos.up());
                     this.world.setBlockState(pos, nox$FLOWING_WATER);
-                    if (state != nox$WATER && state.getMaterial().isReplaceable())
+                    if (state != nox$WATER && state.isReplaceable())
                         this.world.setBlockState(pos.up(), nox$SMALL_WATER);
                 }
             }

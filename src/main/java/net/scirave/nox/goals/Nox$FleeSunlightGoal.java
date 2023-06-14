@@ -32,7 +32,7 @@ public class Nox$FleeSunlightGoal extends Goal {
     public Nox$FleeSunlightGoal(PathAwareEntity mob, double speed) {
         this.mob = mob;
         this.speed = speed;
-        this.world = mob.world;
+        this.world = mob.getWorld();
         this.setControls(EnumSet.of(Goal.Control.MOVE));
     }
 

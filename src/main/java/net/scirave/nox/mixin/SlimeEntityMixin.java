@@ -20,6 +20,7 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.SlimeEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.registry.tag.DamageTypeTags;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
@@ -125,7 +126,7 @@ public abstract class SlimeEntityMixin extends MobEntityMixin {
         super.nox$shouldTakeDamage(source, amount, cir);
         if (source.getName().equals("fall"))
             cir.setReturnValue(!NoxConfig.slimesImmuneToFallDamage);
-        else if (source.isProjectile() && !source.bypassesArmor())
+        else if (source.getTypeRegistryEntry().isIn(DamageTypeTags.IS_PROJECTILE) && !source.getTypeRegistryEntry().isIn(DamageTypeTags.BYPASSES_ARMOR))
             cir.setReturnValue(!NoxConfig.slimesResistProjectiles);
     }
 

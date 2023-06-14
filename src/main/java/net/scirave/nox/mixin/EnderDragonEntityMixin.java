@@ -17,7 +17,10 @@ import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.boss.dragon.EnderDragonEntity;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.damage.DamageType;
+import net.minecraft.entity.damage.DamageTypes;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Heightmap;
 import net.minecraft.world.World;
@@ -37,7 +40,7 @@ public abstract class EnderDragonEntityMixin extends MobEntityMixin {
     @Override
     public void nox$shouldTakeDamage(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
         super.nox$shouldTakeDamage(source, amount, cir);
-        if (source.isExplosive()) {
+        if (new DamageSource((RegistryEntry<DamageType>) DamageTypes.EXPLOSION)==source) {
             cir.setReturnValue(!NoxConfig.enderDragonIsImmuneToExplosionDamage);
         }
     }
@@ -45,7 +48,7 @@ public abstract class EnderDragonEntityMixin extends MobEntityMixin {
     @Override
     public void nox$onTick(CallbackInfo ci) {
         if (nox$fireballCooldown <= 0) {
-            BlockPos blockPos = this.world.getTopPosition(Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, new BlockPos(EndPortalFeature.ORIGIN));
+            BlockPos blockPos = this.world.getTopPosition(Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, new BlockPos(EndPortalFeature.offsetOrigin(null)));
             PlayerEntity player = this.world.getClosestPlayer(nox$RANGE_PREDICATE, (EnderDragonEntity) (Object) this, blockPos.getX(), blockPos.getY(), blockPos.getZ());
             if (player != null && player.squaredDistanceTo((EnderDragonEntity) (Object) this) >= 49.0D && this.canSee(player)) {
                 nox$fireballCooldown = NoxConfig.enderDragonFireballCooldown;

@@ -67,7 +67,7 @@ public abstract class LivingEntityMixin extends EntityMixin implements Nox$Minin
     @Inject(method = "blockedByShield", at = @At("HEAD"), cancellable = true)
     public void nox$ghastFireballsPierce(DamageSource source, CallbackInfoReturnable<Boolean> cir) {
         if (
-                (source.isExplosive() && source.getAttacker() instanceof GhastEntity) ||
+                (source.getAttacker() instanceof GhastEntity) ||
                         (source.getAttacker() instanceof PhantomEntity)
         ) {
             cir.setReturnValue(false);

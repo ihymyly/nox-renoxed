@@ -44,14 +44,14 @@ public abstract class MagmaCubeEntityMixin extends SlimeEntityMixin {
     }
 
     private void nox$attemptLavaFill(BlockPos pos) {
-        if (!this.world.isClient && NoxConfig.magmaCubeLeavesLavaWhenKilled && this.world.getBlockState(pos).getMaterial().isReplaceable()) {
+        if (!this.world.isClient && NoxConfig.magmaCubeLeavesLavaWhenKilled && this.world.getBlockState(pos).isReplaceable()) {
             this.world.setBlockState(pos, NoxConfig.magmaCubeMakesLavaSourceBlocks ? nox$LAVA_SOURCE : nox$FLOWING_LAVA);
         }
     }
 
     private void nox$attemptSmallLavaFill(BlockPos pos) {
         // Used for aesthetics when magmaCubeMakesLavaSourceBlocks is false
-        if (!this.world.isClient && this.world.getBlockState(pos).getMaterial().isReplaceable())
+        if (!this.world.isClient && this.world.getBlockState(pos).isReplaceable())
             this.world.setBlockState(pos, nox$SMALL_LAVA);
     }
 

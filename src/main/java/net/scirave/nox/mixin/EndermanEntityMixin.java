@@ -13,10 +13,13 @@ package net.scirave.nox.mixin;
 
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.damage.DamageType;
+import net.minecraft.entity.damage.DamageTypes;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.EndermanEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.scirave.nox.config.NoxConfig;
 import net.scirave.nox.goals.Nox$MineBlockGoal;
 import org.jetbrains.annotations.Nullable;
@@ -49,14 +52,14 @@ public abstract class EndermanEntityMixin extends HostileEntityMixin {
 
     @Inject(method = "damage", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/mob/EndermanEntity;teleportRandomly()Z", ordinal = 1), locals = LocalCapture.CAPTURE_FAILSOFT, cancellable = true)
     public void nox$endermanLessRandomTeleport(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir, boolean entity) {
-        if (source.getName().equals("onFire") || source.isMagic()) {
+        if (source.equals(new DamageSource((RegistryEntry<DamageType>) DamageTypes.ON_FIRE)) || source.equals(new DamageSource((RegistryEntry<DamageType>) DamageTypes.MAGIC))) {
             cir.setReturnValue(entity);
         }
     }
 
     @Inject(method = "damage", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/damage/DamageSource;getAttacker()Lnet/minecraft/entity/Entity;"))
     public void nox$endermanTeleportOnDamage(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
-        if (this.isAlive() && NoxConfig.endermanTeleportsFromMeleeHit && source.getAttacker() instanceof LivingEntity && !source.getName().equals("onFire") && !source.isMagic()) {
+        if (this.isAlive() && NoxConfig.endermanTeleportsFromMeleeHit && source.getAttacker() instanceof LivingEntity && !source.equals(new DamageSource((RegistryEntry<DamageType>) DamageTypes.ON_FIRE)) && !source.equals(new DamageSource((RegistryEntry<DamageType>) DamageTypes.MAGIC))) {
             for (int i = 0; i < 64; ++i) {
                 if (this.teleportRandomly()) {
                     break;

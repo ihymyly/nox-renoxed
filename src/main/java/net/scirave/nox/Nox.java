@@ -21,6 +21,7 @@ import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ToolItem;
+import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
 import net.minecraft.registry.Registry;
 import net.scirave.nox.config.NoxConfig;
@@ -44,10 +45,10 @@ public class Nox implements ModInitializer {
     @Override
     public void onInitialize() {
         NoxConfig.init(MOD_ID, NoxConfig.class);
-        TOOLS = Registry.ITEM.stream().filter((item) -> item instanceof ToolItem).toList();
-        ARMOR = Registry.ITEM.stream().filter((item) -> item instanceof ArmorItem).toList();
-        Registry.register(Registry.BLOCK, new Identifier(MOD_ID, "cobweb"), NOX_COBWEB);
-        PolymerBlockUtils.registerBlockEntity(NOX_COBWEB_BLOCK_ENTITY = Registry.register(Registry.BLOCK_ENTITY_TYPE,
+        TOOLS = Registries.ITEM.stream().filter((item) -> item instanceof ToolItem).toList();
+        ARMOR = Registries.ITEM.stream().filter((item) -> item instanceof ArmorItem).toList();
+        Registry.register(Registries.BLOCK, new Identifier(MOD_ID, "cobweb"), NOX_COBWEB);
+        PolymerBlockUtils.registerBlockEntity(NOX_COBWEB_BLOCK_ENTITY = Registry.register(Registries.BLOCK_ENTITY_TYPE,
                 new Identifier(MOD_ID, "cobweb_block_entity"),
                 FabricBlockEntityTypeBuilder.create(NoxCobwebBlockEntity::new, NOX_COBWEB).build()));
     }

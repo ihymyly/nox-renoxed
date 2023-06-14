@@ -53,8 +53,8 @@ public abstract class PounceAtTargetMixin extends Goal implements Nox$PounceGoal
             if (this.target != null && this.mob.isOnGround() && !((Nox$MiningInterface) this.mob).nox$isMining()) {
                 double d = this.mob.squaredDistanceTo(this.target);
                 if (!(d <= 4.0D) && !(d >= 16.0D)) {
-                    if ((this.mob.world.getTime() - this.nox$lastPounceUsage) >= this.nox$pounceCooldown) {
-                        this.nox$lastPounceUsage = this.mob.world.getTime();
+                    if ((this.mob.getWorld().getTime() - this.nox$lastPounceUsage) >= this.nox$pounceCooldown) {
+                        this.nox$lastPounceUsage = this.mob.getWorld().getTime();
                         this.mob.getLookControl().lookAt(this.target);
                         Hand hand = this.mob.preferredHand;
                         if (hand != null) {

@@ -40,7 +40,7 @@ public abstract class ServerPlayerEntityMixin {
     @Inject(method = "trySleep", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;getEntitiesByClass(Ljava/lang/Class;Lnet/minecraft/util/math/Box;Ljava/util/function/Predicate;)Ljava/util/List;"), cancellable = true)
     public void nox$sleepNerf(BlockPos pos, CallbackInfoReturnable<Either<PlayerEntity.SleepFailureReason, Unit>> cir) {
         Vec3d vec3d = Vec3d.ofBottomCenter(pos);
-        int seaLevel = this.getWorld().getSeaLevel();
+        int seaLevel = getWorld().getSeaLevel();
         int horizontalSearchDistance = NoxConfig.sleepHorizontalSearchDistance;
         int minVerticalSearchDistance = NoxConfig.sleepMinVerticalSearchDistance;
         boolean extendToSeaLevel = NoxConfig.sleepExtendToSeaLevel;
