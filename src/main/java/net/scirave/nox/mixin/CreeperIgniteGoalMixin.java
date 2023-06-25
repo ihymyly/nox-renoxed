@@ -18,6 +18,8 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.damage.DamageType;
 import net.minecraft.entity.damage.DamageTypes;
 import net.minecraft.entity.mob.CreeperEntity;
+import net.minecraft.registry.Registry;
+import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.util.math.Position;
 import net.scirave.nox.config.NoxConfig;
@@ -59,7 +61,7 @@ public abstract class CreeperIgniteGoalMixin extends Goal {
             this.creeper.setFuseSpeed(-1);
         } else if (d > 16.0D) {
             this.creeper.setFuseSpeed(-1);
-        } else if (!NoxConfig.creepersAttackShields && this.target.isBlocking() && this.target.blockedByShield(new DamageSource((RegistryEntry<DamageType>) DamageTypes.EXPLOSION))) {
+        } else if (!NoxConfig.creepersAttackShields && this.target.isBlocking() && this.target.blockedByShield(this.creeper.getWorld().getDamageSources().explosion(this.creeper, this.creeper))) {
             this.creeper.setFuseSpeed(-1);
         } else {
             this.creeper.setFuseSpeed(1);
@@ -69,7 +71,7 @@ public abstract class CreeperIgniteGoalMixin extends Goal {
     @Inject(method = "canStart", at = @At("RETURN"), cancellable = true)
     public void nox$creeperNoTargetShield(CallbackInfoReturnable<Boolean> cir) {
         LivingEntity victim = this.creeper.getTarget();
-        if (!NoxConfig.creepersAttackShields && cir.getReturnValue() && victim != null && victim.isBlocking() && victim.blockedByShield(new DamageSource((RegistryEntry<DamageType>) DamageTypes.EXPLOSION))) {
+        if (!NoxConfig.creepersAttackShields && cir.getReturnValue() && victim != null && victim.isBlocking() && victim.blockedByShield(this.creeper.getWorld().getDamageSources().explosion(this.creeper, this.creeper))) {
             this.creeper.setFuseSpeed(-1);
             cir.setReturnValue(false);
         }

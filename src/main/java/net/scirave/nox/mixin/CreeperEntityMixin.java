@@ -13,11 +13,7 @@ package net.scirave.nox.mixin;
 
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.FleeEntityGoal;
-import net.minecraft.entity.damage.DamageType;
-import net.minecraft.entity.damage.DamageTypes;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.mob.CreeperEntity;
-import net.minecraft.registry.entry.RegistryEntry;
 import net.scirave.nox.config.NoxConfig;
 import net.scirave.nox.goals.Nox$CreeperBreachGoal;
 import net.scirave.nox.util.Nox$CreeperBreachInterface;
@@ -35,7 +31,7 @@ public abstract class CreeperEntityMixin extends HostileEntityMixin implements N
                 4.0F, 1.2D, 1.5D, (living) -> {
             if (!NoxConfig.creepersRunFromShields) return false;
             if (living instanceof LivingEntity livingEntity) {
-                return livingEntity.isBlocking() && livingEntity.blockedByShield(new DamageSource((RegistryEntry<DamageType>) DamageTypes.EXPLOSION));
+                return livingEntity.isBlocking() && livingEntity.blockedByShield(this.getWorld().getDamageSources().explosion((CreeperEntity) (Object) this, (CreeperEntity) (Object) this));
             }
             return false;
         }));

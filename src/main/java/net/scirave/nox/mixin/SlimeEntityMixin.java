@@ -85,7 +85,7 @@ public abstract class SlimeEntityMixin extends MobEntityMixin {
 
     @Inject(method = "remove", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/mob/SlimeEntity;setSize(IZ)V"), locals = LocalCapture.CAPTURE_FAILSOFT)
     public void nox$slimeReapplyAttributes(Entity.RemovalReason reason, CallbackInfo ci, int i, Text text, boolean bl, float f, int j, int k, int l, float g, float h, SlimeEntity slimeEntity) {
-        if (this.world instanceof ServerWorld serverWorld) {
+        if (this.getWorld() instanceof ServerWorld serverWorld) {
             slimeEntity.initialize(serverWorld, serverWorld.getLocalDifficulty(this.getBlockPos()), SpawnReason.REINFORCEMENT, null, null);
         }
     }
@@ -139,14 +139,14 @@ public abstract class SlimeEntityMixin extends MobEntityMixin {
 
     public void nox$slimeOnDeath() {
         if (NoxConfig.slimePoisonCloudOnDeath && NoxConfig.slimePoisonCloudDurationDivisor > 0 && this.getType() == EntityType.SLIME) {
-            AreaEffectCloudEntity cloud = new AreaEffectCloudEntity(this.world, this.getX(), this.getY(), this.getZ());
+            AreaEffectCloudEntity cloud = new AreaEffectCloudEntity(this.getWorld(), this.getX(), this.getY(), this.getZ());
             cloud.setRadius(NoxConfig.slimePoisonCloudRadiusMultiplier * this.getSize());
             cloud.setRadiusOnUse(-0.5F);
             cloud.setWaitTime(10 + 15 * (this.getSize() - 1));
             cloud.setDuration(cloud.getDuration() * this.getSize() / NoxConfig.slimePoisonCloudDurationDivisor);
             cloud.setRadiusGrowth(-cloud.getRadius() / (float) cloud.getDuration());
             cloud.addEffect(new StatusEffectInstance(StatusEffects.POISON, NoxConfig.slimePoisonDuration, NoxConfig.slimePoisonAmplifier - 1));
-            this.world.spawnEntity(cloud);
+            this.getWorld().spawnEntity(cloud);
         }
     }
 

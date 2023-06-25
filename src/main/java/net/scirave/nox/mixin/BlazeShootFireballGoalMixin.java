@@ -63,7 +63,7 @@ public abstract class BlazeShootFireballGoalMixin {
             LivingEntity target = this.blaze.getTarget();
             if (target == null) return;
 
-            DamageSource fakeSource = new DamageSource((RegistryEntry<DamageType>) DamageTypes.MOB_PROJECTILE);
+            DamageSource fakeSource = this.blaze.getWorld().getDamageSources().mobProjectile(this.blaze, this.blaze);
 
             if (windup > -1) {
                 if (windup > 0) {
