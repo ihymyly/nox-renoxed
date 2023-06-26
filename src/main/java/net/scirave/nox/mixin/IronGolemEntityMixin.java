@@ -42,7 +42,7 @@ public abstract class IronGolemEntityMixin extends GolemEntityMixin {
         if (NoxConfig.ironGolemsHaveASweepAttack) {
             if (this.nox$canSweepAttack) {
                 this.nox$canSweepAttack = false;
-                List<MobEntity> list = this.world.getEntitiesByClass(MobEntity.class, Box.of(target.getPos(), 1, 1, 1), (mob) -> (mob instanceof Monster || mob.getTarget() == (Object) this) && this.canTarget(mob.getType()) && this.canTarget(mob));
+                List<MobEntity> list = this.getWorld().getEntitiesByClass(MobEntity.class, Box.of(target.getPos(), 1, 1, 1), (mob) -> (mob instanceof Monster || mob.getTarget() == (Object) this) && this.canTarget(mob.getType()) && this.canTarget(mob));
                 for (MobEntity mob : list) {
                     this.tryAttack(mob);
                 }

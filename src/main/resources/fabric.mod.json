@@ -2,15 +2,15 @@
   "schemaVersion": 1,
   "id": "nox",
   "version": "${version}",
-  "name": "Nox",
-  "description": "Mob and difficulty overhaul",
+  "name": "Nox: Renoxed",
+  "description": "Mob and difficulty overhaul. Ported to 1.20.",
   "contact": {
-    "homepage": "https://www.curseforge.com/minecraft/mc-mods/nox-a-mob-and-difficulty-overhaul",
-    "sources": "https://github.com/stormdirus2/nox",
-    "issues": "https://github.com/stormdirus2/nox/issues"
+    "homepage": "https://modrinth.com/mod/nox-renoxed",
+    "sources": "https://github.com/qxeii/nox-renoxed",
+    "issues": "https://github.com/qxeii/nox-renoxed/issues"
   },
   "authors": [
-    "SciRave"
+    "SciRave, qxeii"
   ],
   "license": "MPL-2.0",
   "icon": "assets/nox/icon.png",
@@ -33,12 +33,5 @@
     "minecraft": "1.20.X",
     "java": ">=17",
     "midnightlib": ">=1.4.1"
-  },
-  "custom": {
-    "modupdater": {
-      "strategy": "curseforge",
-      "projectID": 565421,
-      "strict": false
-    }
   }
 }
