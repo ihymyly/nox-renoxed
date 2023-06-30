@@ -77,7 +77,7 @@ public abstract class MobEntityMixin extends LivingEntityMixin {
     }
 
 
-    @Inject(method = "<init>", at = @At("TAIL"))
+    @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;<init>(Lnet/minecraft/entity/EntityType;Lnet/minecraft/world/World;)V", shift = At.Shift.AFTER), method = "<init>")
     public void nox$hostileAttributes(EntityType<?> entityType, World world, CallbackInfo ci) {
         if (this instanceof Monster)
             this.getAttributeInstance(EntityAttributes.GENERIC_FOLLOW_RANGE).addTemporaryModifier(new EntityAttributeModifier("Nox: Hostile bonus", NoxConfig.monsterRangeMultiplier - 1, EntityAttributeModifier.Operation.MULTIPLY_BASE));

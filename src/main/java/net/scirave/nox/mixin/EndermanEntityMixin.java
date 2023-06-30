@@ -17,6 +17,7 @@ import net.minecraft.entity.damage.DamageType;
 import net.minecraft.entity.damage.DamageTypes;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.entity.mob.CreeperEntity;
 import net.minecraft.entity.mob.EndermanEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.registry.entry.RegistryEntry;
@@ -52,14 +53,14 @@ public abstract class EndermanEntityMixin extends HostileEntityMixin {
 
     @Inject(method = "damage", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/mob/EndermanEntity;teleportRandomly()Z", ordinal = 1), locals = LocalCapture.CAPTURE_FAILSOFT, cancellable = true)
     public void nox$endermanLessRandomTeleport(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir, boolean entity) {
-        if (source.equals(new DamageSource((RegistryEntry<DamageType>) DamageTypes.ON_FIRE)) || source.equals(new DamageSource((RegistryEntry<DamageType>) DamageTypes.MAGIC))) {
+        if (source.equals(source.getType().equals(DamageTypes.ON_FIRE) || source.getType().equals(DamageTypes.MAGIC))){
             cir.setReturnValue(entity);
         }
     }
 
     @Inject(method = "damage", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/damage/DamageSource;getAttacker()Lnet/minecraft/entity/Entity;"))
     public void nox$endermanTeleportOnDamage(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
-        if (this.isAlive() && NoxConfig.endermanTeleportsFromMeleeHit && source.getAttacker() instanceof LivingEntity && !source.equals(new DamageSource((RegistryEntry<DamageType>) DamageTypes.ON_FIRE)) && !source.equals(new DamageSource((RegistryEntry<DamageType>) DamageTypes.MAGIC))) {
+        if (this.isAlive() && NoxConfig.endermanTeleportsFromMeleeHit && source.getAttacker() instanceof LivingEntity && !source.getType().equals(DamageTypes.ON_FIRE) && !source.getType().equals(DamageTypes.MAGIC)) {
             for (int i = 0; i < 64; ++i) {
                 if (this.teleportRandomly()) {
                     break;
