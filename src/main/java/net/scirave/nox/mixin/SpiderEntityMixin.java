@@ -37,8 +37,8 @@ public abstract class SpiderEntityMixin extends HostileEntityMixin {
     public void nox$onSuccessfulAttack(LivingEntity target) {
         if (NoxConfig.spiderAttacksPlaceWebs && this.getType().getWidth() >= EntityType.CAVE_SPIDER.getWidth()) {
             BlockPos pos = target.getBlockPos();
-            if (this.world.getBlockState(pos).isReplaceable())
-                this.world.setBlockState(pos, Nox.NOX_COBWEB.getDefaultState());
+            if (this.getWorld().getBlockState(pos).isReplaceable())
+                this.getWorld().setBlockState(pos, Nox.NOX_COBWEB.getDefaultState());
         }
     }
 

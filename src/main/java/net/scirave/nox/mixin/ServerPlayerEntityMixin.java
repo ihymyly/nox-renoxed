@@ -22,6 +22,7 @@ import net.minecraft.util.Unit;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.World;
 import net.scirave.nox.config.NoxConfig;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -33,12 +34,11 @@ import java.util.List;
 @Mixin(value = ServerPlayerEntity.class, priority = 100)
 public abstract class ServerPlayerEntityMixin {
 
-    public abstract ServerWorld getWorld();
 
     @Inject(method = "trySleep", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;getEntitiesByClass(Ljava/lang/Class;Lnet/minecraft/util/math/Box;Ljava/util/function/Predicate;)Ljava/util/List;"), cancellable = true)
     public void nox$sleepNerf(BlockPos pos, CallbackInfoReturnable<Either<PlayerEntity.SleepFailureReason, Unit>> cir) {
         Vec3d vec3d = Vec3d.ofBottomCenter(pos);
-        int seaLevel = getWorld().getSeaLevel();
+        int seaLevel = ((ServerPlayerEntity) (Object) this).getWorld().getSeaLevel();
         int horizontalSearchDistance = NoxConfig.sleepHorizontalSearchDistance;
         int minVerticalSearchDistance = NoxConfig.sleepMinVerticalSearchDistance;
         boolean extendToSeaLevel = NoxConfig.sleepExtendToSeaLevel;
@@ -46,7 +46,7 @@ public abstract class ServerPlayerEntityMixin {
         double upperY = extendToSeaLevel ? Math.max(vec3d.getY() + minVerticalSearchDistance, seaLevel) : vec3d.getY() + minVerticalSearchDistance;
         double lowerY = extendToSeaLevel ? Math.min(vec3d.getY() - minVerticalSearchDistance, seaLevel) : vec3d.getY() - minVerticalSearchDistance;
 
-        List<HostileEntity> list = this.getWorld().getEntitiesByClass(HostileEntity.class, new Box(
+        List<HostileEntity> list = ((ServerPlayerEntity) (Object) this).getWorld().getEntitiesByClass(HostileEntity.class, new Box(
                         vec3d.getX() - horizontalSearchDistance, lowerY, vec3d.getZ() - horizontalSearchDistance,
                         vec3d.getX() + horizontalSearchDistance, upperY, vec3d.getZ() + horizontalSearchDistance),
                 (hostileEntity) -> hostileEntity.isAngryAt((ServerPlayerEntity) (Object) this)
