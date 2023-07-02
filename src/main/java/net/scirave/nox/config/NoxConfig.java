@@ -98,6 +98,10 @@ public class NoxConfig extends MidnightConfig {
     @Comment(centered = true)
     public static Comment comment_creepers;
     @Entry
+    public static boolean creepersPounceAtTarget = true;
+    @Entry
+    public static boolean creepersExplodeOnDeath = true;
+    @Entry
     public static boolean creepersBreachWalls = true;
     @Entry
     public static int creeperBreachDistance = 7;
@@ -282,6 +286,8 @@ public class NoxConfig extends MidnightConfig {
     @Comment(centered = true)
     public static Comment comment_skeletons;
     @Entry
+    public static double skeletonSpeedMultiplier = 1.75;
+    @Entry
     public static boolean skeletonsCanSwim = true;
     @Entry
     public static boolean strayAttacksApplyStrongerSlowness = true;
@@ -374,16 +380,12 @@ public class NoxConfig extends MidnightConfig {
     // Zombies
     @Comment(centered = true)
     public static Comment comment_zombies;
-    /* TODO Not used
-    @Entry//@Comment("[Zombies] Zombies pounce at their target")
+    @Entry
     public static boolean zombiesPounceAtTarget = true;
-    @Entry//@Comment("[Zombies] Pounce cooldown (ticks)")
-    public static long zombiePounceCooldown = 30;
-    @Entry//@Comment("[Zombies] Knockback resistance bonus")
+    @Entry
     public static double zombieKnockbackResistanceBonus = 0.3;
-    @Entry//@Comment("[Zombies] Babies get knockback resistance")
+    @Entry
     public static boolean babyZombiesGetKnockbackResistance = false;
-    */
     @Entry
     public static float drownedSwimSpeedMultiplier = 10.0F;
     @Entry

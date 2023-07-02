@@ -27,7 +27,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArgs;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
-// TODO: figure out a way to tweak this such that mobs don't keep pouncing back and forth through a target without ever hitting it
 @Mixin(PounceAtTargetGoal.class)
 public abstract class PounceAtTargetMixin extends Goal implements Nox$PounceGoalInterface {
 
@@ -45,7 +44,6 @@ public abstract class PounceAtTargetMixin extends Goal implements Nox$PounceGoal
         args.set(2, ((double) args.get(2)) * 2);
     }
 
-    // TODO: tweak whether mobs pounce based on y-level differential.
     @Inject(method = "canStart", at = @At("HEAD"), cancellable = true)
     public void nox$betterPounce(CallbackInfoReturnable<Boolean> cir) {
         if (mob instanceof Nox$PouncingEntityInterface && ((Nox$PouncingEntityInterface) mob).nox$isAllowedToPounce()) {
@@ -53,20 +51,25 @@ public abstract class PounceAtTargetMixin extends Goal implements Nox$PounceGoal
             if (this.target != null && this.mob.isOnGround() && !((Nox$MiningInterface) this.mob).nox$isMining()) {
                 double d = this.mob.squaredDistanceTo(this.target);
                 if (!(d <= 4.0D) && !(d >= 16.0D)) {
-                    if ((this.mob.getWorld().getTime() - this.nox$lastPounceUsage) >= this.nox$pounceCooldown) {
-                        this.nox$lastPounceUsage = this.mob.getWorld().getTime();
-                        this.mob.getLookControl().lookAt(this.target);
-                        Hand hand = this.mob.preferredHand;
-                        if (hand != null) {
-                            this.mob.swingHand(hand);
+                    if (this.mob.getY() >= (this.target.getY()) - 0.1) {
+                        if ((this.mob.getWorld().getTime() - this.nox$lastPounceUsage) >= this.nox$pounceCooldown) {
+                            this.nox$lastPounceUsage = this.mob.getWorld().getTime();
+                            this.mob.getLookControl().lookAt(this.target);
+                            Hand hand = this.mob.preferredHand;
+                            if (hand != null) {
+                                if (d < 1.0D) {
+                                    this.mob.tryAttack(target);
+                                }
+                                this.mob.swingHand(hand);
+                            }
+                            cir.setReturnValue(true);
+                            return;
                         }
-                        cir.setReturnValue(true);
-                        return;
                     }
                 }
             }
-            cir.setReturnValue(false);
         }
+        cir.setReturnValue(false);
     }
 
     @Override

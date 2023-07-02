@@ -11,8 +11,17 @@
 
 package net.scirave.nox.mixin;
 
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.ai.goal.FleeEntityGoal;
+import net.minecraft.entity.ai.goal.PounceAtTargetGoal;
 import net.minecraft.entity.ai.goal.SwimGoal;
+import net.minecraft.entity.attribute.EntityAttributeModifier;
+import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.mob.AbstractSkeletonEntity;
+import net.minecraft.entity.mob.CreeperEntity;
+import net.minecraft.entity.mob.ZombieEntity;
+import net.minecraft.world.World;
 import net.scirave.nox.config.NoxConfig;
 import net.scirave.nox.goals.Nox$FleeSunlightGoal;
 import net.scirave.nox.util.Nox$SwimGoalInterface;
@@ -31,8 +40,16 @@ public abstract class AbstractSkeletonEntityMixin extends HostileEntityMixin imp
     }
 
     @Override
+    public void nox$modifyAttributes(EntityType<?> entityType, World world, CallbackInfo ci) {
+        if (NoxConfig.skeletonSpeedMultiplier > 1) {
+            this.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED).addTemporaryModifier(new EntityAttributeModifier("Nox: Skeleton bonus", NoxConfig.skeletonSpeedMultiplier - 1, EntityAttributeModifier.Operation.MULTIPLY_BASE));
+        }
+    }
+
+    @Override
     public boolean nox$canSwim() {
         return NoxConfig.skeletonsCanSwim;
     }
+
 
 }
