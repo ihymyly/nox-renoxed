@@ -24,7 +24,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class EndCrystalEntityMixin extends EntityMixin {
 
     public void nox$invulnerableCheck(DamageSource source, CallbackInfoReturnable<Boolean> cir) {
-        if (this.world instanceof ServerWorld serverWorld && NoxConfig.endCrystalsIndestructibleUnlessConnectedToDragon) {
+        if (this.getWorld() instanceof ServerWorld serverWorld && NoxConfig.endCrystalsIndestructibleUnlessConnectedToDragon) {
             EnderDragonFight enderDragonFight = serverWorld.getEnderDragonFight();
             if (enderDragonFight != null && ((Nox$EnderDragonFightInterface) enderDragonFight).inDragonRange(this.getPos())) {
                 if (!((Nox$EnderDragonFightInterface) enderDragonFight).isConnectedCrystal((EndCrystalEntity) (Object) this)) {

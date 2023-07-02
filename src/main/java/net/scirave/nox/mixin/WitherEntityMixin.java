@@ -45,7 +45,7 @@ public abstract class WitherEntityMixin extends HostileEntityMixin {
     private int nox$reinforcementsCooldown = NoxConfig.witherCallReinforcementsCooldown;
 
     private void nox$witherBreakBlocks() {
-        if (!this.world.getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING) || !NoxConfig.destructiveWither) return;
+        if (!this.getWorld().getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING) || !NoxConfig.destructiveWither) return;
         Box box = this.getBoundingBox().expand(1, 0, 1);
 
         int i = MathHelper.floor(box.minX);
@@ -60,12 +60,12 @@ public abstract class WitherEntityMixin extends HostileEntityMixin {
             for (int p = j; p <= m; ++p) {
                 for (int q = k; q <= n; ++q) {
                     BlockPos blockPos = new BlockPos(o, p, q);
-                    BlockState blockState = this.world.getBlockState(blockPos);
+                    BlockState blockState = this.getWorld().getBlockState(blockPos);
                     if (!blockState.isAir() && !blockState.isIn(BlockTags.WITHER_IMMUNE)) {
                         if (NoxUtil.isAtWoodLevel(blockState)) {
-                            bl = this.world.removeBlock(blockPos, false) || bl;
+                            bl = this.getWorld().removeBlock(blockPos, false) || bl;
                         } else {
-                            bl = this.world.breakBlock(blockPos, true, (WitherEntity) (Object) this) || bl;
+                            bl = this.getWorld().breakBlock(blockPos, true, (WitherEntity) (Object) this) || bl;
                         }
                     }
                 }
@@ -73,7 +73,7 @@ public abstract class WitherEntityMixin extends HostileEntityMixin {
         }
 
         if (bl) {
-            this.world.syncWorldEvent(null, 1022, this.getBlockPos(), 0);
+            this.getWorld().syncWorldEvent(null, 1022, this.getBlockPos(), 0);
         }
 
     }
@@ -107,7 +107,7 @@ public abstract class WitherEntityMixin extends HostileEntityMixin {
                     WitherSkeletonEntity skeleton = EntityType.WITHER_SKELETON.create(serverWorld);
                     if (skeleton != null) {
                         skeleton.setPos(this.getX() + this.getRandom().nextBetween(-2, 2), this.getY(), this.getZ() + this.getRandom().nextBetween(-2, 2));
-                        skeleton.initialize(serverWorld, this.world.getLocalDifficulty(skeleton.getBlockPos()), SpawnReason.REINFORCEMENT, null, null);
+                        skeleton.initialize(serverWorld, this.getWorld().getLocalDifficulty(skeleton.getBlockPos()), SpawnReason.REINFORCEMENT, null, null);
                         serverWorld.spawnEntityAndPassengers(skeleton);
                         skeleton.setTarget(target);
                         skeleton.playSpawnEffects();
