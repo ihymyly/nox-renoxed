@@ -21,10 +21,7 @@ import net.minecraft.entity.damage.DamageType;
 import net.minecraft.entity.damage.DamageTypes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.Heightmap;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.feature.EndPortalFeature;
 import net.scirave.nox.config.NoxConfig;
 import net.scirave.nox.util.NoxUtil;
 import org.spongepowered.asm.mixin.Mixin;
@@ -32,7 +29,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(EnderDragonEntity.class)
-public abstract class EnderDragonEntityMixin extends MobEntityMixin {
+public abstract class EnderDragonEntityMixin extends MobEntityMixin{
 
     private static final TargetPredicate nox$RANGE_PREDICATE = TargetPredicate.createAttackable();
     private int nox$fireballCooldown = 0;
@@ -48,8 +45,7 @@ public abstract class EnderDragonEntityMixin extends MobEntityMixin {
     @Override
     public void nox$onTick(CallbackInfo ci) {
         if (nox$fireballCooldown <= 0) {
-            BlockPos blockPos = this.world.getTopPosition(Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, new BlockPos(EndPortalFeature.offsetOrigin(null)));
-            PlayerEntity player = this.world.getClosestPlayer(nox$RANGE_PREDICATE, (EnderDragonEntity) (Object) this, blockPos.getX(), blockPos.getY(), blockPos.getZ());
+            PlayerEntity player = this.getWorld().getClosestPlayer(nox$RANGE_PREDICATE, (EnderDragonEntity) (Object) this, ((EnderDragonEntity) (Object) this).getX(), ((EnderDragonEntity) (Object) this).getY(), ((EnderDragonEntity) (Object) this).getZ());
             if (player != null && player.squaredDistanceTo((EnderDragonEntity) (Object) this) >= 49.0D && this.canSee(player)) {
                 nox$fireballCooldown = NoxConfig.enderDragonFireballCooldown;
                 NoxUtil.EnderDragonShootFireball((EnderDragonEntity) (Object) this, player);

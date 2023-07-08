@@ -13,10 +13,7 @@ package net.scirave.nox.mixin;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.mob.CreeperEntity;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
@@ -71,6 +68,4 @@ public abstract class EntityMixin {
     public void nox$onRemoveEntity(Entity.RemovalReason reason, CallbackInfo ci){
         //Overridden
     }
-
-
 }

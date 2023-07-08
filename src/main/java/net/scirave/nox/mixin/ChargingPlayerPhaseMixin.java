@@ -63,8 +63,7 @@ public abstract class ChargingPlayerPhaseMixin extends AbstractPhase {
 
     @Inject(method = "serverTick", at = @At(value = "HEAD"))
     public void nox$enderDragonBetterCharging(CallbackInfo ci) {
-        BlockPos blockPos = this.dragon.getWorld().getTopPosition(Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, new BlockPos(EndPortalFeature.offsetOrigin(null)));
-        PlayerEntity player = this.dragon.getWorld().getClosestPlayer(RANGE_PREDICATE, this.dragon, blockPos.getX(), blockPos.getY(), blockPos.getZ());
+        PlayerEntity player = this.dragon.getWorld().getClosestPlayer(RANGE_PREDICATE, this.dragon.getX(), this.dragon.getY(), this.dragon.getZ());
         if (player != null) {
             this.setPathTarget(player.getPos());
 

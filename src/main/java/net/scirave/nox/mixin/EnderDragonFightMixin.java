@@ -17,6 +17,7 @@ import net.minecraft.entity.boss.dragon.EnderDragonFight;
 import net.minecraft.entity.decoration.EndCrystalEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.entity.EntityLookup;
 import net.scirave.nox.util.Nox$EnderDragonFightInterface;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
@@ -25,8 +26,10 @@ import org.spongepowered.asm.mixin.Shadow;
 
 import java.util.UUID;
 
+import static net.minecraft.world.entity.EntityLookup.*;
+
 @Mixin(EnderDragonFight.class)
-public class EnderDragonFightMixin implements Nox$EnderDragonFightInterface {
+public abstract class EnderDragonFightMixin implements Nox$EnderDragonFightInterface {
 
     @Shadow
     @Final
@@ -46,7 +49,7 @@ public class EnderDragonFightMixin implements Nox$EnderDragonFightInterface {
 
     @Override
     public boolean isConnectedCrystal(EndCrystalEntity crystal) {
-        Entity entity = this.world.getEntity(this.dragonUuid);
+        Entity entity = world.getEntity(dragonUuid);
         if (entity instanceof EnderDragonEntity dragon) {
             return dragon.connectedCrystal == crystal;
         }
@@ -56,9 +59,9 @@ public class EnderDragonFightMixin implements Nox$EnderDragonFightInterface {
     @Override
     public boolean inDragonRange(Vec3d pos) {
         if (!this.dragonKilled) {
-            Entity entity = this.world.getEntity(this.dragonUuid);
-            if (entity instanceof EnderDragonEntity dragon) {
-                return dragon.squaredDistanceTo(pos) < 250000.0D;
+            Entity entity = world.getEntity(dragonUuid);
+            if (entity instanceof EnderDragonEntity) {
+                return entity.squaredDistanceTo(pos) < 250000.0D;
             }
         }
         return false;

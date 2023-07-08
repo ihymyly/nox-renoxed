@@ -33,4 +33,5 @@ public abstract class HostileEntityMixin extends MobEntityMixin {
         else
             cir.setReturnValue(true);
     }
+
 }
