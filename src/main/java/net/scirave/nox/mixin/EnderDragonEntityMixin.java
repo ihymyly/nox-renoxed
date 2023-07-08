@@ -11,6 +11,7 @@
 
 package net.scirave.nox.mixin;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ai.TargetPredicate;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
@@ -21,6 +22,7 @@ import net.minecraft.entity.damage.DamageType;
 import net.minecraft.entity.damage.DamageTypes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.registry.tag.DamageTypeTags;
 import net.minecraft.world.World;
 import net.scirave.nox.config.NoxConfig;
 import net.scirave.nox.util.NoxUtil;
@@ -36,8 +38,7 @@ public abstract class EnderDragonEntityMixin extends MobEntityMixin{
 
     @Override
     public void nox$shouldTakeDamage(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
-        super.nox$shouldTakeDamage(source, amount, cir);
-        if (new DamageSource((RegistryEntry<DamageType>) DamageTypes.EXPLOSION)==source) {
+        if (source.getTypeRegistryEntry().isIn(DamageTypeTags.IS_EXPLOSION)) {
             cir.setReturnValue(!NoxConfig.enderDragonIsImmuneToExplosionDamage);
         }
     }

@@ -11,14 +11,11 @@
 
 package net.scirave.nox.mixin;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.boss.dragon.EnderDragonEntity;
 import net.minecraft.entity.boss.dragon.EnderDragonFight;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.decoration.EndCrystalEntity;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.world.entity.EntityLookup;
-import net.minecraft.world.entity.SimpleEntityLookup;
+import net.minecraft.text.Text;
 import net.scirave.nox.config.NoxConfig;
 import net.scirave.nox.util.Nox$EnderDragonFightInterface;
 import org.spongepowered.asm.mixin.Mixin;
@@ -27,6 +24,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(EndCrystalEntity.class)
 public abstract class EndCrystalEntityMixin extends EntityMixin {
 
+    @Override
     public void nox$invulnerableCheck(DamageSource source, CallbackInfoReturnable<Boolean> cir) {
         if (this.getWorld() instanceof ServerWorld serverWorld && NoxConfig.endCrystalsIndestructibleUnlessConnectedToDragon) {
             EnderDragonFight enderDragonFight = serverWorld.getEnderDragonFight();
@@ -36,7 +34,6 @@ public abstract class EndCrystalEntityMixin extends EntityMixin {
                 }
             }
         }
-        cir.setReturnValue(false);
     }
 
 }
