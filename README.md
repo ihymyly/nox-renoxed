@@ -63,10 +63,13 @@ Experimentation is encouraged.
 
 ### All Zombies..
 * Have increased movement speed (+25% base)
+* Have increased knockback resistance
 * Avoid and flee from the sun (if it affects them)
 * Can mine blocks
+* Pounce towards their target
 
 ### All Skeletons..
+* Have increased movement speed
 * Flee from the sun
 * Can swim
 
@@ -81,6 +84,7 @@ Experimentation is encouraged.
 
 ### Creepers..
 * Flee blocking entities
+* Pounce toward their target
 * Move during ignition
 * Breach walls
 * Continue to ignite without line of sight
