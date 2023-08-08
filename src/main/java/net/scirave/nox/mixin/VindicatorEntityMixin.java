@@ -37,8 +37,10 @@ public abstract class VindicatorEntityMixin extends HostileEntityMixin {
             if (attr != null)
                 attr.addTemporaryModifier(new EntityAttributeModifier("Nox: Vindicator bonus", NoxConfig.vindicatorKnockbackResistanceBonus, EntityAttributeModifier.Operation.ADDITION));
         }
+        if (NoxConfig.vindicatorSpeedBonus > 1) {
+                this.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED).addTemporaryModifier(new EntityAttributeModifier("Nox: Vindicator speed bonus", NoxConfig.vindicatorSpeedBonus - 1, EntityAttributeModifier.Operation.MULTIPLY_BASE));
+        }
     }
-
     @Override
     public boolean nox$isAllowedToMine() {
         return NoxConfig.vindicatorsBreakBlocks;

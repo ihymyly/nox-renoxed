@@ -80,6 +80,8 @@
   "nox.midnightconfig.creepersRunFromShields.tooltip": "Creepers will run from shielding Players",
   "nox.midnightconfig.creepersAttackShields": "Creepers Attack Shields",
   "nox.midnightconfig.creepersAttackShields.tooltip": "Creepers attack shielding players",
+  "nox.midnightconfig.creeperSpeedBonus": "Creeper Speed Multiplier",
+  "nox.midnightconfig.creeperSpeedBonus.tooltip": "Creeper movement speed multiplier",
 
   "nox.midnightconfig.comment_effects": "Effects",
   "nox.midnightconfig.caveSpiderSlownessBiteDuration": "Cave Spider Slowness Bite Duration",
@@ -202,6 +204,8 @@
   "nox.midnightconfig.evokersResistProjectiles.tooltip": "Evokers are immune to non-armor-piercing projectiles",
   "nox.midnightconfig.vindicatorKnockbackResistanceBonus": "Vindicator Knockback Resistance Bonus",
   "nox.midnightconfig.vindicatorKnockbackResistanceBonus.tooltip": "Vindicator knockback resistance bonus",
+  "nox.midnightconfig.vindicatorSpeedBonus":  "Vindicator speed multiplier",
+  "nox.midnightconfig.vindicatorSpeedBonus.tooltip":  "Vindicator movement speed multiplier",
 
   "nox.midnightconfig.comment_phantoms": "Phantoms",
   "nox.midnightconfig.phantomsPhaseThroughBlocks": "Phantoms Phase Through Blocks",
