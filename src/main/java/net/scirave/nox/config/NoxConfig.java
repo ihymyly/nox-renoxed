@@ -109,6 +109,8 @@ public class NoxConfig extends MidnightConfig {
     public static boolean creepersRunFromShields = true;
     @Entry
     public static boolean creepersAttackShields = false;
+    @Entry
+    public static double creeperSpeedMultiplier = 1.5;
 
     // Effects
     @Comment(centered = true)
@@ -245,6 +247,8 @@ public class NoxConfig extends MidnightConfig {
     public static boolean evokersImmuneToMagic = true;
     @Entry
     public static double vindicatorKnockbackResistanceBonus = 0.3;
+    @Entry
+    public static double vindicatorSpeedBonus = 1.25;
 
     // Phantoms
     @Comment(centered = true)

@@ -12,10 +12,15 @@
 package net.scirave.nox.mixin;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.FleeEntityGoal;
 import net.minecraft.entity.ai.goal.PounceAtTargetGoal;
+import net.minecraft.entity.attribute.EntityAttributeModifier;
+import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.mob.CreeperEntity;
+import net.minecraft.entity.mob.ZombieEntity;
+import net.minecraft.world.World;
 import net.scirave.nox.config.NoxConfig;
 import net.scirave.nox.goals.Nox$CreeperBreachGoal;
 import net.scirave.nox.util.Nox$CreeperBreachInterface;
@@ -47,6 +52,13 @@ public abstract class CreeperEntityMixin extends HostileEntityMixin implements N
         }));
         if (NoxConfig.creeperBreachDistance > 0) {
             this.goalSelector.add(3, new Nox$CreeperBreachGoal((CreeperEntity) (Object) this));
+        }
+    }
+
+    @Override
+    public void nox$modifyAttributes(EntityType<?> entityType, World world, CallbackInfo ci) {
+        if (NoxConfig.creeperSpeedMultiplier > 1) {
+            this.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED).addTemporaryModifier(new EntityAttributeModifier("Nox: Creeper speed bonus", NoxConfig.creeperSpeedMultiplier - 1, EntityAttributeModifier.Operation.MULTIPLY_BASE));
         }
     }
 
