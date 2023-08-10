@@ -30,8 +30,6 @@ public abstract class HostileEntityMixin extends MobEntityMixin {
         if (type == EntityType.CAVE_SPIDER && spawnReason == SpawnReason.NATURAL)
             if (pos.getY() >= world.getSeaLevel() || world.isSkyVisibleAllowingSea(pos))
                 cir.setReturnValue(false);
-        else
-            cir.setReturnValue(true);
     }
 
 }

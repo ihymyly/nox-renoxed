@@ -15,7 +15,6 @@ import net.minecraft.entity.boss.dragon.EnderDragonFight;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.decoration.EndCrystalEntity;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.text.Text;
 import net.scirave.nox.config.NoxConfig;
 import net.scirave.nox.util.Nox$EnderDragonFightInterface;
 import org.spongepowered.asm.mixin.Mixin;
