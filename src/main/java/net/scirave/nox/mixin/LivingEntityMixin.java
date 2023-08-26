@@ -19,6 +19,8 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.mob.GhastEntity;
 import net.minecraft.entity.mob.PhantomEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.random.Random;
 import net.scirave.nox.util.Nox$MiningInterface;
 import org.jetbrains.annotations.Nullable;
@@ -63,6 +65,8 @@ public abstract class LivingEntityMixin extends EntityMixin implements Nox$Minin
     public abstract void stopUsingItem();
 
     @Shadow public abstract float getHealth();
+
+    @Shadow public abstract ItemStack getStackInHand(Hand hand);
 
     @Inject(method = "blockedByShield", at = @At("HEAD"), cancellable = true)
     public void nox$ghastFireballsPierce(DamageSource source, CallbackInfoReturnable<Boolean> cir) {

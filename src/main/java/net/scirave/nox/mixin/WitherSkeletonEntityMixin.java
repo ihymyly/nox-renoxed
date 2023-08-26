@@ -19,6 +19,7 @@ import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.mob.WitherSkeletonEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -36,6 +37,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(value = WitherSkeletonEntity.class)
 public abstract class WitherSkeletonEntityMixin extends AbstractSkeletonEntityMixin {
+
+    protected WitherSkeletonEntityMixin(EntityType<? extends HostileEntity> entityType, World world) {
+        super(entityType, world);
+    }
 
     @Inject(method = "initEquipment", at = @At("TAIL"))
     public void nox$witherSkeletonArchers(Random random, LocalDifficulty localDifficulty, CallbackInfo ci) {

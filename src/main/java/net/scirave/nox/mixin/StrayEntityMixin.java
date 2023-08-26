@@ -11,8 +11,11 @@
 
 package net.scirave.nox.mixin;
 
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.mob.StrayEntity;
+import net.minecraft.world.World;
 import net.scirave.nox.config.NoxConfig;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -20,6 +23,10 @@ import org.spongepowered.asm.mixin.injection.ModifyArg;
 
 @Mixin(StrayEntity.class)
 public abstract class StrayEntityMixin extends AbstractSkeletonEntityMixin {
+
+    protected StrayEntityMixin(EntityType<? extends HostileEntity> entityType, World world) {
+        super(entityType, world);
+    }
 
     @ModifyArg(method = "createArrowProjectile", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/projectile/ArrowEntity;addEffect(Lnet/minecraft/entity/effect/StatusEffectInstance;)V"))
     public StatusEffectInstance nox$strayBetterSlowness(StatusEffectInstance effect) {
