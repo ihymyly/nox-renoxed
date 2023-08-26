@@ -16,13 +16,11 @@ import net.minecraft.entity.ai.goal.AvoidSunlightGoal;
 import net.minecraft.entity.ai.goal.PounceAtTargetGoal;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
-import net.minecraft.entity.mob.CreeperEntity;
 import net.minecraft.entity.mob.ZombieEntity;
 import net.minecraft.world.World;
 import net.scirave.nox.config.NoxConfig;
 import net.scirave.nox.goals.Nox$FleeSunlightGoal;
 import net.scirave.nox.goals.Nox$MineBlockGoal;
-import net.scirave.nox.util.Nox$PounceGoalInterface;
 import net.scirave.nox.util.Nox$PouncingEntityInterface;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -70,5 +68,9 @@ public abstract class ZombieEntityMixin extends HostileEntityMixin implements No
     @Override
     public boolean nox$isAllowedToPounce() {
         return NoxConfig.zombiesPounceAtTarget;
+    }
+    @Override
+    public int nox$pounceCooldown() {
+        return NoxConfig.zombiesPounceCooldown;
     }
 }

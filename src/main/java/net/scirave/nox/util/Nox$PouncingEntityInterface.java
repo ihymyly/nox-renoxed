@@ -16,5 +16,8 @@ public interface Nox$PouncingEntityInterface {
     default boolean nox$isAllowedToPounce() {
         return false;
     }
+    default int nox$pounceCooldown() {
+        return 10;
+    }
 
 }

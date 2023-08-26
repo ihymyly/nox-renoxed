@@ -19,7 +19,6 @@ import net.minecraft.entity.ai.goal.PounceAtTargetGoal;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.mob.CreeperEntity;
-import net.minecraft.entity.mob.ZombieEntity;
 import net.minecraft.world.World;
 import net.scirave.nox.config.NoxConfig;
 import net.scirave.nox.goals.Nox$CreeperBreachGoal;
@@ -35,7 +34,7 @@ import static net.scirave.nox.config.NoxConfig.creepersExplodeOnDeath;
 
 
 @Mixin(CreeperEntity.class)
-public abstract class CreeperEntityMixin extends HostileEntityMixin implements Nox$CreeperBreachInterface, Nox$PouncingEntityInterface {
+public abstract class CreeperEntityMixin extends HostileEntityMixin implements Nox$CreeperBreachInterface, Nox$PouncingEntityInterface{
 
     @Shadow protected abstract void explode();
 
@@ -83,4 +82,8 @@ public abstract class CreeperEntityMixin extends HostileEntityMixin implements N
         return NoxConfig.creepersPounceAtTarget;
     }
 
+    @Override
+    public int nox$pounceCooldown() {
+        return NoxConfig.creepersPounceCooldown;
+    }
 }
