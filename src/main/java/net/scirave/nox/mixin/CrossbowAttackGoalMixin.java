@@ -49,7 +49,7 @@ public class CrossbowAttackGoalMixin {
     private int windup = -1;
     private boolean heldShield = false;
 
-    @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/ai/RangedAttackMob;attack(Lnet/minecraft/entity/LivingEntity;F)V"), cancellable = true)
+    @Inject(method = "tick", at = @At(value = "HEAD"), cancellable = true)
     public void nox$crossbowDontShootShields(CallbackInfo ci) {
         LivingEntity target = this.actor.getTarget();
         if (target == null) return;

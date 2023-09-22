@@ -43,9 +43,4 @@ public class NoxCobwebBlock extends BlockWithEntity implements PolymerBlock {
         return BlockRenderType.MODEL;
     }
 
-    @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        return checkType(type, Nox.NOX_COBWEB_BLOCK_ENTITY, NoxCobwebBlockEntity::tick);
-    }
-
 }

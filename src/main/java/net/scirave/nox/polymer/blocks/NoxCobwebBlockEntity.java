@@ -32,7 +32,7 @@ public class NoxCobwebBlockEntity extends BlockEntity {
         super(Nox.NOX_COBWEB_BLOCK_ENTITY, pos, state);
     }
 
-    public static void tick(World world, BlockPos pos, BlockState state, NoxCobwebBlockEntity be) {
+    public static void tick(World world, BlockPos pos, NoxCobwebBlockEntity be) {
         if (be.age > MAX_AGE) {
             if (be.ticksUntilRemovalCheck == 0) {
                 be.ticksUntilRemovalCheck = 12;

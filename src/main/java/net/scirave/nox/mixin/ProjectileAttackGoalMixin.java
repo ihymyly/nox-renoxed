@@ -59,7 +59,7 @@ public abstract class ProjectileAttackGoalMixin {
         }
     }
 
-    @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/ai/RangedAttackMob;attack(Lnet/minecraft/entity/LivingEntity;F)V"), cancellable = true)
+    @Inject(method = "tick", at = @At(value = "HEAD"), cancellable = true)
     public void nox$projectileMaybeDontShootShields(CallbackInfo ci) {
         if (this.nox$projectileShouldntShootShields()) {
             this.updateCountdownTicks++;
