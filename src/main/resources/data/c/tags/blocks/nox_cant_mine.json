@@ -1,12 +1,17 @@
 {
   "replace": false,
   "values": [
-    "#climbable",
     "minecraft:tinted_glass",
+    "#banners",
+    "#buttons",
+    "#candles",
+    "#climbable",
+    "#crops",
     "#pressure_plates",
     "#rails",
-    "#replaceable_plants",
+    "#replaceable",
     "#saplings",
-    "#signs"
+    "#flowers",
+    "#all_signs"
   ]
 }
