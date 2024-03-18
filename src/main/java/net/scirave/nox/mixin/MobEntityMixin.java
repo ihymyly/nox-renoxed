@@ -1,7 +1,7 @@
 /*
  * -------------------------------------------------------------------
  * Nox
- * Copyright (c) 2023 SciRave
+ * Copyright (c) 2024 SciRave
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -51,9 +51,6 @@ public abstract class MobEntityMixin extends LivingEntityMixin {
 
     @Shadow
     public abstract void setTarget(@Nullable LivingEntity target);
-
-    @Shadow
-    public abstract void equipStack(EquipmentSlot slot, ItemStack stack);
 
     @Inject(method = "tryAttack", at = @At("RETURN"))
     public void nox$onAttack(Entity target, CallbackInfoReturnable<Boolean> cir) {

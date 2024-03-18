@@ -21,6 +21,9 @@
     ],
     "client": [
       "net.scirave.nox.NoxClient"
+    ],
+    "fabric-datagen": [
+      "net.scirave.nox.datagen.DataGenInit"
     ]
   },
   "mixins": [

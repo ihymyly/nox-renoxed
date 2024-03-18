@@ -1,7 +1,7 @@
 /*
  * -------------------------------------------------------------------
  * Nox
- * Copyright (c) 2023 SciRave
+ * Copyright (c) 2024 SciRave
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -36,17 +36,13 @@ public class Nox implements ModInitializer {
 
     public static String MOD_ID = "nox";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
-    public static List<Item> TOOLS = null;
-    public static List<Item> ARMOR = null;
-
     public static final Block NOX_COBWEB = new NoxCobwebBlock(AbstractBlock.Settings.copy(Blocks.COBWEB));
     public static BlockEntityType<NoxCobwebBlockEntity> NOX_COBWEB_BLOCK_ENTITY;
 
     @Override
     public void onInitialize() {
         NoxConfig.init(MOD_ID, NoxConfig.class);
-        TOOLS = Registries.ITEM.stream().filter((item) -> item instanceof ToolItem).toList();
-        ARMOR = Registries.ITEM.stream().filter((item) -> item instanceof ArmorItem).toList();
+        NoxConfig.write(MOD_ID);
         Registry.register(Registries.BLOCK, new Identifier(MOD_ID, "cobweb"), NOX_COBWEB);
         PolymerBlockUtils.registerBlockEntity(NOX_COBWEB_BLOCK_ENTITY = Registry.register(Registries.BLOCK_ENTITY_TYPE,
                 new Identifier(MOD_ID, "cobweb_block_entity"),

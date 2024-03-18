@@ -1,5 +1,5 @@
 plugins {
-    id 'fabric-loom' version '0.12-SNAPSHOT'
+    id 'fabric-loom' version '1.5.+'
     id 'org.cadixdev.licenser' version '0.6.1'
     id 'maven-publish'
 }
@@ -13,7 +13,28 @@ group = project.maven_group
 
 loom {
     accessWidenerPath = file("src/main/resources/nox.accesswidener")
+
+    runs {
+        datagen {
+            server()
+            name = "Data Generation"
+            runDir = "build/datagen"
+            vmArg("-Dfabric-api.datagen")
+            vmArg("-Dfabric-api.datagen.output-dir=${file("src/main/generated")}")
+        }
+    }
 }
+
+sourceSets {
+    main {
+        resources {
+            srcDirs += [
+                    "src/main/generated"
+            ]
+        }
+    }
+}
+
 repositories {
     maven {
         name "modrinth"
@@ -37,6 +58,7 @@ dependencies {
     modImplementation "maven.modrinth:midnightlib:${midnightlib_version}"
 
     modImplementation include ("eu.pb4:polymer-core:${project.polymer_version}")
+    modImplementation include("eu.pb4:common-protection-api:1.0.0")
 
     modRuntimeOnly "com.terraformersmc:modmenu:${project.modmenu_version}"
 }

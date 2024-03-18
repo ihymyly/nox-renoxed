@@ -1,7 +1,7 @@
 /*
  * -------------------------------------------------------------------
  * Nox
- * Copyright (c) 2023 SciRave
+ * Copyright (c) 2024 SciRave
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -43,6 +43,8 @@ public class NoxConfig extends MidnightConfig {
     @Entry
     public static float blockBreakingHardnessCutoff = 3.0F;
     @Entry
+    public static boolean respectBlockBreakingProtectionMods = false;
+    @Entry
     public static boolean endermenBreakBlocks = true;
     @Entry
     public static boolean piglinsBreakBlocks = true;
@@ -62,6 +64,10 @@ public class NoxConfig extends MidnightConfig {
     public static Comment comment_spawning;
     @Entry
     public static boolean slimeNaturalSpawn = true;
+    @Entry
+    public static int slimeNaturalSpawnMaxBlockLight = 0;
+    @Entry
+    public static int slimeNaturalSpawnMaxSkyLight = 7;
     @Entry
     public static int guardianNaturalSpawnWeight = 10;
     @Entry

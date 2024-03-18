@@ -1,7 +1,7 @@
 /*
  * -------------------------------------------------------------------
  * Nox
- * Copyright (c) 2023 SciRave
+ * Copyright (c) 2024 SciRave
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -25,10 +25,7 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.random.Random;
-import net.minecraft.world.LocalDifficulty;
-import net.minecraft.world.ServerWorldAccess;
-import net.minecraft.world.World;
-import net.minecraft.world.WorldAccess;
+import net.minecraft.world.*;
 import net.scirave.nox.config.NoxConfig;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -53,7 +50,8 @@ public abstract class SlimeEntityMixin extends MobEntityMixin {
     @Inject(method = "canSpawn", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/random/ChunkRandom;getSlimeRandom(IIJJ)Lnet/minecraft/util/math/random/Random;"), cancellable = true)
     private static void nox$slimeSpawnNaturally(EntityType<SlimeEntity> type, WorldAccess world, SpawnReason spawnReason, BlockPos pos, Random random, CallbackInfoReturnable<Boolean> cir) {
         if (NoxConfig.slimeNaturalSpawn) {
-            if (world.getLightLevel(pos) <= 7) {
+            if (world.getLightLevel(LightType.BLOCK, pos) <= NoxConfig.slimeNaturalSpawnMaxBlockLight
+                    && world.getLightLevel(LightType.SKY, pos) - world.getAmbientDarkness() <= NoxConfig.slimeNaturalSpawnMaxSkyLight) {
                 cir.setReturnValue(SlimeEntity.canMobSpawn(type, world, spawnReason, pos, random));
             }
         }

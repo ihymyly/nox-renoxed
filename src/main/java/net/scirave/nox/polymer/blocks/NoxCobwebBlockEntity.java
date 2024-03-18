@@ -1,7 +1,7 @@
 /*
  * -------------------------------------------------------------------
  * Nox
- * Copyright (c) 2023 SciRave
+ * Copyright (c) 2024 SciRave
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -39,7 +39,10 @@ public class NoxCobwebBlockEntity extends BlockEntity {
                 if (world.getRandom().nextInt(20) == 0 && world.getOtherEntities(null, new Box(pos).expand(0.3), e -> e instanceof LivingEntity).isEmpty())
                     world.removeBlock(pos, false);
             } else be.ticksUntilRemovalCheck--;
-        } else be.age++;
+        } else {
+            be.age++;
+            be.markDirty();
+        }
     }
 
     @Override
