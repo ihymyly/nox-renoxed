@@ -1,7 +1,7 @@
 /*
  * -------------------------------------------------------------------
  * Nox
- * Copyright (c) 2023 SciRave
+ * Copyright (c) 2024 SciRave
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -21,11 +21,13 @@ import net.minecraft.entity.mob.GhastEntity;
 import net.minecraft.entity.mob.PhantomEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import net.scirave.nox.util.Nox$MiningInterface;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -34,6 +36,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends EntityMixin implements Nox$MiningInterface {
 
+    @Unique
     private boolean nox$mining = false;
 
     @Shadow
@@ -65,8 +68,6 @@ public abstract class LivingEntityMixin extends EntityMixin implements Nox$Minin
     public abstract void stopUsingItem();
 
     @Shadow public abstract float getHealth();
-
-    @Shadow public abstract ItemStack getStackInHand(Hand hand);
 
     @Inject(method = "blockedByShield", at = @At("HEAD"), cancellable = true)
     public void nox$ghastFireballsPierce(DamageSource source, CallbackInfoReturnable<Boolean> cir) {

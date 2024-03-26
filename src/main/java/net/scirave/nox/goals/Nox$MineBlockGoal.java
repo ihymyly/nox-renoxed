@@ -1,7 +1,7 @@
 /*
  * -------------------------------------------------------------------
  * Nox
- * Copyright (c) 2023 SciRave
+ * Copyright (c) 2024 SciRave
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -12,6 +12,8 @@
 package net.scirave.nox.goals;
 
 
+import com.mojang.authlib.GameProfile;
+import eu.pb4.common.protection.api.CommonProtection;
 import net.minecraft.block.*;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.Goal;
@@ -37,6 +39,8 @@ public class Nox$MineBlockGoal extends Goal {
     private LivingEntity targetSeen;
     private BlockPos posToMine;
     private int mineTick;
+    @Nullable
+    private GameProfile profile;
 
     public Nox$MineBlockGoal(MobEntity living) {
         this.owner = living;
@@ -247,6 +251,15 @@ public class Nox$MineBlockGoal extends Goal {
 
     private boolean isBreakable(World world, BlockPos pos) {
         BlockState state = world.getBlockState(pos);
+        if (NoxConfig.respectBlockBreakingProtectionMods) {
+            if (this.profile == null) {
+                this.profile = new GameProfile(this.owner.getUuid(), "[" + this.owner.getType().getUntranslatedName() + "]");
+            }
+            if (!CommonProtection.canBreakBlock(world, pos, this.profile, null)) {
+                return false;
+            }
+        }
+
         return !state.getCollisionShape(world, pos).isEmpty() && canMine(state);
     }
 }

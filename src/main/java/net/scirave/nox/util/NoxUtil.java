@@ -1,7 +1,7 @@
 /*
  * -------------------------------------------------------------------
  * Nox
- * Copyright (c) 2023 SciRave
+ * Copyright (c) 2024 SciRave
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -31,7 +31,9 @@ import net.minecraft.item.ArmorItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.Identifier;
@@ -50,9 +52,11 @@ import java.util.Map;
 
 public class NoxUtil {
 
-    public static final TagKey<Block> NOX_ALWAYS_MINE = TagKey.of(RegistryKeys.BLOCK, new Identifier("c", "nox_always_mine"));
-    public static final TagKey<Block> NOX_CANT_MINE = TagKey.of(RegistryKeys.BLOCK, new Identifier("c", "nox_cant_mine"));
-    public static final TagKey<Item> FIREPROOF = TagKey.of(RegistryKeys.ITEM, new Identifier("c:fireproof"));
+    public static final TagKey<Block> NOX_ALWAYS_MINE = TagKey.of(RegistryKeys.BLOCK, new Identifier("nox:always_mine"));
+    public static final TagKey<Block> NOX_CANT_MINE = TagKey.of(RegistryKeys.BLOCK, new Identifier("nox:cant_mine"));
+    public static final TagKey<Item> FIREPROOF = TagKey.of(RegistryKeys.ITEM, new Identifier("nox:fireproof"));
+    public static final TagKey<Item> ARMOR = TagKey.of(RegistryKeys.ITEM, new Identifier("nox:mob_armor"));
+    public static final TagKey<Item> TOOLS = TagKey.of(RegistryKeys.ITEM, new Identifier("nox:mob_tools"));
     private final static ItemStack WOOD_PICKAXE = Items.WOODEN_PICKAXE.getDefaultStack();
     private final static ItemStack WOOD_AXE = Items.WOODEN_AXE.getDefaultStack();
     private final static ItemStack WOOD_SHOVEL = Items.WOODEN_SHOVEL.getDefaultStack();
@@ -93,15 +97,11 @@ public class NoxUtil {
     }
 
     public static Item randomWeapon(Random random) {
-        int choice = MathHelper.nextInt(random, 0, Nox.TOOLS.size() - 1);
-
-        return Nox.TOOLS.get(choice);
+        return Registries.ITEM.getOrCreateEntryList(TOOLS).getRandom(random).map(RegistryEntry::value).orElse(Items.AIR);
     }
 
     public static Item randomArmor(Random random) {
-        int choice = MathHelper.nextInt(random, 0, Nox.ARMOR.size() - 1);
-
-        return Nox.ARMOR.get(choice);
+        return Registries.ITEM.getOrCreateEntryList(ARMOR).getRandom(random).map(RegistryEntry::value).orElse(Items.AIR);
     }
 
     public static double getLeewayAmount(double damage, double total, int armor, double toughness, double modifier) {
