@@ -1,4 +1,5 @@
-// 1.20.4	2024-03-18T09:20:18.789288471	Nox: Renoxed/Tags for minecraft:block
-75886f637fb7e98e3043ab6b64672ec8800fa362 data/nox/tags/blocks/cant_mine.json
-bfe4c18ec4a3a080ce5d1f15a22405cb68685a60 data/nox/tags/blocks/always_mine.json
-90e1c4601eda4b9b456b182ffd5c8a7d7ecb7010 data/minecraft/tags/blocks/sword_efficient.json
+// 1.20.4	2024-05-05T22:00:58.1825774	Nox: Renoxed/Tags for minecraft:block
+75886f637fb7e98e3043ab6b64672ec8800fa362 data\nox\tags\blocks\cant_mine.json
+90e1c4601eda4b9b456b182ffd5c8a7d7ecb7010 data\minecraft\tags\blocks\sword_efficient.json
+bfe4c18ec4a3a080ce5d1f15a22405cb68685a60 data\nox\tags\blocks\always_mine.json
+90e1c4601eda4b9b456b182ffd5c8a7d7ecb7010 data\minecraft\tags\blocks\fall_damage_resetting.json

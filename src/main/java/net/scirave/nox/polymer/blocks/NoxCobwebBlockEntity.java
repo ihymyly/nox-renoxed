@@ -15,6 +15,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
@@ -32,13 +33,17 @@ public class NoxCobwebBlockEntity extends BlockEntity {
         super(Nox.NOX_COBWEB_BLOCK_ENTITY, pos, state);
     }
 
-    public static void tick(World world, BlockPos pos, NoxCobwebBlockEntity be) {
+    public static void tick(World world, BlockPos pos, BlockState blockState, NoxCobwebBlockEntity be) {
         if (be.age > MAX_AGE) {
             if (be.ticksUntilRemovalCheck == 0) {
                 be.ticksUntilRemovalCheck = 12;
-                if (world.getRandom().nextInt(20) == 0 && world.getOtherEntities(null, new Box(pos).expand(0.3), e -> e instanceof LivingEntity).isEmpty())
-                    world.removeBlock(pos, false);
-            } else be.ticksUntilRemovalCheck--;
+                be.markDirty();
+                if (world.getRandom().nextInt(20) == 0)
+                    world.breakBlock(pos, false);
+            } else {
+                be.ticksUntilRemovalCheck--;
+                be.markDirty();
+            }
         } else {
             be.age++;
             be.markDirty();

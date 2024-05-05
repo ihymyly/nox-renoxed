@@ -34,6 +34,10 @@ class BlockTagsProvider extends FabricTagProvider.BlockTagProvider {
                 .add(Nox.NOX_COBWEB)
         ;
 
+        this.getOrCreateTagBuilder(BlockTags.FALL_DAMAGE_RESETTING)
+                .add(Nox.NOX_COBWEB)
+        ;
+
         this.getOrCreateTagBuilder(NoxUtil.NOX_ALWAYS_MINE)
                 .addOptionalTag(BlockTags.WOODEN_DOORS)
                 .addOptionalTag(BlockTags.WOODEN_TRAPDOORS)
