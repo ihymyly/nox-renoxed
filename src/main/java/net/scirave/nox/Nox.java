@@ -43,9 +43,9 @@ public class Nox implements ModInitializer {
     public void onInitialize() {
         NoxConfig.init(MOD_ID, NoxConfig.class);
         NoxConfig.write(MOD_ID);
-        Registry.register(Registries.BLOCK, new Identifier(MOD_ID, "cobweb"), NOX_COBWEB);
+        Registry.register(Registries.BLOCK, Identifier.of(MOD_ID, "cobweb"), NOX_COBWEB);
         PolymerBlockUtils.registerBlockEntity(NOX_COBWEB_BLOCK_ENTITY = Registry.register(Registries.BLOCK_ENTITY_TYPE,
-                new Identifier(MOD_ID, "cobweb_block_entity"),
+                Identifier.of(MOD_ID, "cobweb_block_entity"),
                 FabricBlockEntityTypeBuilder.create(NoxCobwebBlockEntity::new, NOX_COBWEB).build()));
     }
 }

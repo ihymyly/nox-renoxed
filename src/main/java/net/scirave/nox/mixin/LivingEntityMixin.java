@@ -39,10 +39,6 @@ public abstract class LivingEntityMixin extends EntityMixin implements Nox$Minin
 
     @Unique
     private boolean nox$mining = false;
-
-    @Shadow
-    public abstract Random getRandom();
-
     @Shadow
     public abstract boolean isAlive();
 

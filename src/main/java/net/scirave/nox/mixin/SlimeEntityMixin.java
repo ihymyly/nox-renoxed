@@ -24,6 +24,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.tag.DamageTypeTags;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.*;
@@ -89,7 +90,7 @@ public abstract class SlimeEntityMixin extends MobEntityMixin {
         }
     }
 
-    @Inject(method = "damage", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/mob/SlimeEntity;applyDamageEffects(Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/entity/Entity;)V"))
+    @Inject(method = "damage", at = @At(value = "INVOKE", target = "Lnet/minecraft/enchantment/EnchantmentHelper;onTargetDamaged(Lnet/minecraft/server/world/ServerWorld;Lnet/minecraft/entity/Entity;Lnet/minecraft/entity/damage/DamageSource;)V"))
     public void nox$slimeOnAttack(LivingEntity victim, CallbackInfo ci) {
         //Overridden
     }
@@ -100,24 +101,24 @@ public abstract class SlimeEntityMixin extends MobEntityMixin {
         if (NoxConfig.slimeBaseHealthMultiplier > 1) {
             attr = this.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH);
             if (attr != null) {
-                attr.addTemporaryModifier(new EntityAttributeModifier("Nox: Slime bonus", NoxConfig.slimeBaseHealthMultiplier - 1, EntityAttributeModifier.Operation.ADD_MULTIPLIED_BASE));
+                attr.addTemporaryModifier(new EntityAttributeModifier(Identifier.of("nox:slime_bonus"), NoxConfig.slimeBaseHealthMultiplier - 1, EntityAttributeModifier.Operation.ADD_MULTIPLIED_BASE));
                 this.setHealth(this.getMaxHealth());
             }
         }
         if (NoxConfig.slimeFollowRangeMultiplier > 1) {
             attr = this.getAttributeInstance(EntityAttributes.GENERIC_FOLLOW_RANGE);
             if (attr != null)
-                attr.addTemporaryModifier(new EntityAttributeModifier("Nox: Slime bonus", NoxConfig.slimeFollowRangeMultiplier - 1, EntityAttributeModifier.Operation.ADD_MULTIPLIED_BASE));
+                attr.addTemporaryModifier(new EntityAttributeModifier(Identifier.of("nox:slime_bonus"), NoxConfig.slimeFollowRangeMultiplier - 1, EntityAttributeModifier.Operation.ADD_MULTIPLIED_BASE));
         }
         if (NoxConfig.slimeMoveSpeedMultiplier > 1) {
             attr = this.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED);
             if (attr != null)
-                attr.addTemporaryModifier(new EntityAttributeModifier("Nox: Slime bonus", NoxConfig.slimeMoveSpeedMultiplier - 1, EntityAttributeModifier.Operation.ADD_MULTIPLIED_BASE));
+                attr.addTemporaryModifier(new EntityAttributeModifier(Identifier.of("nox:slime_bonus"), NoxConfig.slimeMoveSpeedMultiplier - 1, EntityAttributeModifier.Operation.ADD_MULTIPLIED_BASE));
         }
 
         attr = this.getAttributeInstance(EntityAttributes.GENERIC_ATTACK_KNOCKBACK);
         if (attr != null)
-            attr.addTemporaryModifier(new EntityAttributeModifier("Nox: Slime bonus", 0, EntityAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+            attr.addTemporaryModifier(new EntityAttributeModifier(Identifier.of("nox:slime_bonus"), 0, EntityAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
     }
 
     @Override

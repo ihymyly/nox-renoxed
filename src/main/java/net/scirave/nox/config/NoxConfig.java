@@ -302,6 +302,10 @@ public class NoxConfig extends MidnightConfig {
     @Entry
     public static boolean skeletonsCanSwim = true;
     @Entry
+    public static boolean skeletonImprovedAim = true;
+    @Entry
+    public static float skeletonShootArrowPower = 2.0f;
+    @Entry
     public static boolean strayAttacksApplyStrongerSlowness = true;
     @Entry
     public static boolean witherSkeletonArchersExist = true;

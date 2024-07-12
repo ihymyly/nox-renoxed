@@ -25,6 +25,7 @@ import net.minecraft.entity.mob.Monster;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.World;
@@ -78,7 +79,7 @@ public abstract class MobEntityMixin extends LivingEntityMixin {
     @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;<init>(Lnet/minecraft/entity/EntityType;Lnet/minecraft/world/World;)V", shift = At.Shift.AFTER), method = "<init>")
     public void nox$hostileAttributes(EntityType<?> entityType, World world, CallbackInfo ci) {
         if (this instanceof Monster && this.getAttributeInstance(EntityAttributes.GENERIC_FOLLOW_RANGE) != null) {
-            this.getAttributeInstance(EntityAttributes.GENERIC_FOLLOW_RANGE).addTemporaryModifier(new EntityAttributeModifier("Nox: Hostile bonus", NoxConfig.monsterRangeMultiplier - 1, EntityAttributeModifier.Operation.ADD_MULTIPLIED_BASE));
+            this.getAttributeInstance(EntityAttributes.GENERIC_FOLLOW_RANGE).addTemporaryModifier(new EntityAttributeModifier(Identifier.of("nox:hostile_bonus"), NoxConfig.monsterRangeMultiplier - 1, EntityAttributeModifier.Operation.ADD_MULTIPLIED_BASE));
         }
     }
 

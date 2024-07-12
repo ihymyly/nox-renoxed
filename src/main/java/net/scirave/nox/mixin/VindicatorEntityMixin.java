@@ -16,6 +16,7 @@ import net.minecraft.entity.attribute.EntityAttributeInstance;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.mob.VindicatorEntity;
+import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 import net.scirave.nox.config.NoxConfig;
 import net.scirave.nox.goals.Nox$MineBlockGoal;
@@ -35,10 +36,10 @@ public abstract class VindicatorEntityMixin extends HostileEntityMixin {
         if (NoxConfig.vindicatorKnockbackResistanceBonus > 0) {
             EntityAttributeInstance attr = this.getAttributeInstance(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE);
             if (attr != null)
-                attr.addTemporaryModifier(new EntityAttributeModifier("Nox: Vindicator bonus", NoxConfig.vindicatorKnockbackResistanceBonus, EntityAttributeModifier.Operation.ADD_VALUE));
+                attr.addTemporaryModifier(new EntityAttributeModifier(Identifier.of("nox:vindicator_bonus"), NoxConfig.vindicatorKnockbackResistanceBonus, EntityAttributeModifier.Operation.ADD_VALUE));
         }
         if (NoxConfig.vindicatorSpeedBonus > 1) {
-                this.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED).addTemporaryModifier(new EntityAttributeModifier("Nox: Vindicator speed bonus", NoxConfig.vindicatorSpeedBonus - 1, EntityAttributeModifier.Operation.ADD_MULTIPLIED_BASE));
+                this.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED).addTemporaryModifier(new EntityAttributeModifier(Identifier.of("nox:vindicator_bonus"), NoxConfig.vindicatorSpeedBonus - 1, EntityAttributeModifier.Operation.ADD_MULTIPLIED_BASE));
         }
     }
     @Override

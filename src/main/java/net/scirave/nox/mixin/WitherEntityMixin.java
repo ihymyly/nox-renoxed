@@ -22,6 +22,7 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.mob.WitherSkeletonEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.registry.tag.BlockTags;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
@@ -125,9 +126,9 @@ public abstract class WitherEntityMixin extends HostileEntityMixin {
 
     @Override
     public void nox$hostileAttributes(EntityType<?> entityType, World world, CallbackInfo ci) {
-        this.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH).addTemporaryModifier(new EntityAttributeModifier("Nox: Wither bonus", NoxConfig.witherBaseHealthMultiplier - 1, EntityAttributeModifier.Operation.ADD_MULTIPLIED_BASE));
+        this.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH).addTemporaryModifier(new EntityAttributeModifier(Identifier.of("nox:wither_bonus"), NoxConfig.witherBaseHealthMultiplier - 1, EntityAttributeModifier.Operation.ADD_MULTIPLIED_BASE));
         this.setHealth(this.getMaxHealth());
-        this.getAttributeInstance(EntityAttributes.GENERIC_FOLLOW_RANGE).addTemporaryModifier(new EntityAttributeModifier("Nox: Wither bonus", NoxConfig.witherFollowRangeMultiplier - 1, EntityAttributeModifier.Operation.ADD_MULTIPLIED_BASE));
+        this.getAttributeInstance(EntityAttributes.GENERIC_FOLLOW_RANGE).addTemporaryModifier(new EntityAttributeModifier(Identifier.of("nox:wither_bonus"), NoxConfig.witherFollowRangeMultiplier - 1, EntityAttributeModifier.Operation.ADD_MULTIPLIED_BASE));
     }
 
     @Override

@@ -17,6 +17,7 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -61,6 +62,8 @@ public abstract class EntityMixin {
     public abstract EntityType<?> getType();
 
     @Shadow public abstract Vec3d getVelocity();
+
+    @Shadow public abstract Random getRandom();
 
     @Inject(method = "isInvulnerableTo", at = @At("HEAD"), cancellable = true)
     public void nox$invulnerableCheck(DamageSource source, CallbackInfoReturnable<Boolean> cir) {

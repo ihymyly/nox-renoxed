@@ -17,6 +17,7 @@ import net.minecraft.entity.ai.goal.PounceAtTargetGoal;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.mob.ZombieEntity;
+import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 import net.scirave.nox.config.NoxConfig;
 import net.scirave.nox.goals.Nox$FleeSunlightGoal;
@@ -38,10 +39,10 @@ public abstract class ZombieEntityMixin extends HostileEntityMixin implements No
     public void nox$modifyAttributes(EntityType<?> entityType, World world, CallbackInfo ci) {
         if(((ZombieEntity) (Object) this).isBaby() && NoxConfig.babyZombiesGetKnockbackResistance || !((ZombieEntity) (Object) this).isBaby())
         if (NoxConfig.zombieKnockbackResistanceBonus > 0) {
-            this.getAttributeInstance(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE).addTemporaryModifier(new EntityAttributeModifier("Nox: Zombie bonus", NoxConfig.zombieKnockbackResistanceBonus, EntityAttributeModifier.Operation.ADD_MULTIPLIED_BASE));
+            this.getAttributeInstance(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE).addTemporaryModifier(new EntityAttributeModifier(Identifier.of("nox:zombie_bonus"), NoxConfig.zombieKnockbackResistanceBonus, EntityAttributeModifier.Operation.ADD_MULTIPLIED_BASE));
         }
         if (NoxConfig.zombieSpeedMultiplier > 1) {
-            this.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED).addTemporaryModifier(new EntityAttributeModifier("Nox: Zombie bonus", NoxConfig.zombieSpeedMultiplier - 1, EntityAttributeModifier.Operation.ADD_MULTIPLIED_BASE));
+            this.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED).addTemporaryModifier(new EntityAttributeModifier(Identifier.of("nox:zombie_bonus"), NoxConfig.zombieSpeedMultiplier - 1, EntityAttributeModifier.Operation.ADD_MULTIPLIED_BASE));
         }
     }
 
