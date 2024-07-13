@@ -21,6 +21,7 @@ import net.minecraft.entity.damage.DamageTypes;
 import net.minecraft.entity.mob.EvokerEntity;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.tag.DamageTypeTags;
+import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 import net.scirave.nox.config.NoxConfig;
 import org.spongepowered.asm.mixin.Mixin;
@@ -35,7 +36,7 @@ public abstract class EvokerEntityMixin extends HostileEntityMixin {
         if (NoxConfig.evokerBaseHealthMultiplier > 1) {
             EntityAttributeInstance attr = this.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH);
             if (attr != null) {
-                this.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH).addTemporaryModifier(new EntityAttributeModifier("Nox: Evoker bonus", NoxConfig.evokerBaseHealthMultiplier - 1, EntityAttributeModifier.Operation.MULTIPLY_BASE));
+                this.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH).addTemporaryModifier(new EntityAttributeModifier(Identifier.of("nox:evoker_bonus"), NoxConfig.evokerBaseHealthMultiplier - 1, EntityAttributeModifier.Operation.ADD_MULTIPLIED_BASE));
                 this.setHealth(this.getMaxHealth());
             }
         }

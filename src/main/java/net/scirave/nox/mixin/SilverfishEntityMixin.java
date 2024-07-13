@@ -21,6 +21,7 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.SilverfishEntity;
+import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 import net.scirave.nox.config.NoxConfig;
 import net.scirave.nox.util.Nox$PouncingEntityInterface;
@@ -38,7 +39,7 @@ public abstract class SilverfishEntityMixin extends HostileEntityMixin implement
         if (NoxConfig.silverfishMoveSpeedMultiplier > 1) {
             EntityAttributeInstance attr = this.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED);
             if (attr != null)
-                attr.addTemporaryModifier(new EntityAttributeModifier("Nox: Silverfish bonus", NoxConfig.silverfishMoveSpeedMultiplier - 1, EntityAttributeModifier.Operation.MULTIPLY_BASE));
+                attr.addTemporaryModifier(new EntityAttributeModifier(Identifier.of("nox:silverfish_bonus"), NoxConfig.silverfishMoveSpeedMultiplier - 1, EntityAttributeModifier.Operation.ADD_MULTIPLIED_BASE));
         }
     }
 

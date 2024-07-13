@@ -1,4 +1,4 @@
-// 1.20.4	2024-05-05T22:00:58.1835759	Nox: Renoxed/Tags for minecraft:item
-841eced35eacdee487d9232b7096b02934392805 data\nox\tags\items\fireproof.json
-d112b993b6aa31a7deb005d58f279a7576070e22 data\nox\tags\items\mob_armor.json
-bcefc529eea2006fb5ea06d1f7adf2d263cdd637 data\nox\tags\items\mob_tools.json
+// 1.21	2024-07-05T21:08:17.445251944	Nox: Renoxed/Tags for minecraft:item
+2e67690a90eeff625d7a467272e0204abe931c81 data/nox/tags/item/mob_tools.json
+3c8c6b475af12db066c59a6dbba5ca67859335d9 data/nox/tags/item/fireproof.json
+dc6d336eb7b7d0ba82b475c9cc2f7b78189bb5c1 data/nox/tags/item/mob_armor.json

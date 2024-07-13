@@ -21,6 +21,7 @@ import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.boss.dragon.EnderDragonEntity;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.mob.Monster;
 import net.minecraft.entity.passive.GolemEntity;
@@ -52,11 +53,11 @@ import java.util.Map;
 
 public class NoxUtil {
 
-    public static final TagKey<Block> NOX_ALWAYS_MINE = TagKey.of(RegistryKeys.BLOCK, new Identifier("nox:always_mine"));
-    public static final TagKey<Block> NOX_CANT_MINE = TagKey.of(RegistryKeys.BLOCK, new Identifier("nox:cant_mine"));
-    public static final TagKey<Item> FIREPROOF = TagKey.of(RegistryKeys.ITEM, new Identifier("nox:fireproof"));
-    public static final TagKey<Item> ARMOR = TagKey.of(RegistryKeys.ITEM, new Identifier("nox:mob_armor"));
-    public static final TagKey<Item> TOOLS = TagKey.of(RegistryKeys.ITEM, new Identifier("nox:mob_tools"));
+    public static final TagKey<Block> NOX_ALWAYS_MINE = TagKey.of(RegistryKeys.BLOCK, Identifier.of("nox:always_mine"));
+    public static final TagKey<Block> NOX_CANT_MINE = TagKey.of(RegistryKeys.BLOCK, Identifier.of("nox:cant_mine"));
+    public static final TagKey<Item> FIREPROOF = TagKey.of(RegistryKeys.ITEM, Identifier.of("nox:fireproof"));
+    public static final TagKey<Item> ARMOR = TagKey.of(RegistryKeys.ITEM, Identifier.of("nox:mob_armor"));
+    public static final TagKey<Item> TOOLS = TagKey.of(RegistryKeys.ITEM, Identifier.of("nox:mob_tools"));
     private final static ItemStack WOOD_PICKAXE = Items.WOODEN_PICKAXE.getDefaultStack();
     private final static ItemStack WOOD_AXE = Items.WOODEN_AXE.getDefaultStack();
     private final static ItemStack WOOD_SHOVEL = Items.WOODEN_SHOVEL.getDefaultStack();
@@ -88,11 +89,9 @@ public class NoxUtil {
             dragon.getWorld().syncWorldEvent(null, 1017, dragon.getBlockPos(), 0);
         }
 
-        DragonFireballEntity dragonFireballEntity = new DragonFireballEntity(dragon.getWorld(), dragon, n, o, p);
+        DragonFireballEntity dragonFireballEntity = new DragonFireballEntity(dragon.getWorld(), dragon, new Vec3d(n, o, p));
         dragonFireballEntity.refreshPositionAndAngles(k, l, m, 0.0F, 0.0F);
-        dragonFireballEntity.powerX *= 5;
-        dragonFireballEntity.powerY *= 5;
-        dragonFireballEntity.powerZ *= 5;
+        dragonFireballEntity.accelerationPower *= 5;
         dragon.getWorld().spawnEntity(dragonFireballEntity);
     }
 
@@ -104,8 +103,8 @@ public class NoxUtil {
         return Registries.ITEM.getOrCreateEntryList(ARMOR).getRandom(random).map(RegistryEntry::value).orElse(Items.AIR);
     }
 
-    public static double getLeewayAmount(double damage, double total, int armor, double toughness, double modifier) {
-        double diff = damage * modifier - DamageUtil.getDamageLeft((float) total, armor, (float) toughness);
+    public static double getLeewayAmount(LivingEntity armorWearer, double damage, double total, int armor, double toughness, double modifier, DamageSource source) {
+        double diff = damage * modifier - DamageUtil.getDamageLeft(armorWearer, (float) total, source, armor, (float) toughness);
         double ratio = 0;
         if (diff != 0) {
             ratio = diff / damage;
@@ -114,30 +113,30 @@ public class NoxUtil {
         return ratio;
     }
 
-    public static boolean resistanceWithinLeeway(double damage, double total, int armor, double toughness, double lowerLeeway, double higherLeeway, double modifier) {
-        double ratio = getLeewayAmount(damage, total, armor, toughness, modifier);
+    public static boolean resistanceWithinLeeway(LivingEntity armorWearer, double damage, double total, int armor, double toughness, double lowerLeeway, double higherLeeway, double modifier, DamageSource source) {
+        double ratio = getLeewayAmount(armorWearer, damage, total, armor, toughness, modifier, source);
         return ratio >= -higherLeeway && ratio <= lowerLeeway;
     }
 
-    public static double getItemQuality(Item item, EquipmentSlot slot, EntityAttribute type, @Nullable Double base) {
+    public static double getItemQuality(Item item, EquipmentSlot slot, RegistryEntry<EntityAttribute> type, @Nullable Double base) {
         if (base == null) {
             base = (double) 0;
         }
 
-        Multimap<EntityAttribute, EntityAttributeModifier> map = item.getAttributeModifiers(slot);
+        var map = item.getAttributeModifiers();
         double multiple = 0;
         double multiply = 1;
         double add = 0;
 
-        for (Map.Entry<EntityAttribute, EntityAttributeModifier> entry : map.entries()) {
-            EntityAttribute attribute = entry.getKey();
-            EntityAttributeModifier modifier = entry.getValue();
+        for (var entry : map.modifiers()) {
+            var attribute = entry.attribute();
+            var modifier = entry.modifier();
 
-            if (attribute == type) {
-                switch (modifier.getOperation()) {
-                    case MULTIPLY_BASE -> multiple += modifier.getValue();
-                    case ADDITION -> add += modifier.getValue();
-                    case MULTIPLY_TOTAL -> multiply *= 1 + modifier.getValue();
+            if (attribute == type && entry.slot().matches(slot)) {
+                switch (modifier.operation()) {
+                    case ADD_MULTIPLIED_BASE -> multiple += modifier.value();
+                    case ADD_VALUE -> add += modifier.value();
+                    case ADD_MULTIPLIED_TOTAL -> multiply *= 1 + modifier.value();
                 }
 
             }
@@ -214,14 +213,14 @@ public class NoxUtil {
             Item item = null;
             int iterated = 0;
 
-            while (freeFirstPass || !resistanceWithinLeeway(damage, total, armor, toughness, lowerLeeway, higherLeeway, mod) && iterated < 20) {
+            while (freeFirstPass || !resistanceWithinLeeway(mob, damage, total, armor, toughness, lowerLeeway, higherLeeway, mod, world.getDamageSources().generic()) && iterated < 20) {
                 freeFirstPass = false;
                 for (int i = 0; i < 5; i++) {
                     item = randomWeapon(random);
 
                     total = getItemDamage(item, EquipmentSlot.MAINHAND, damage);
 
-                    if (resistanceWithinLeeway(damage, total, armor, toughness, lowerLeeway, higherLeeway, mod)) {
+                    if (resistanceWithinLeeway(mob, damage, total, armor, toughness, lowerLeeway, higherLeeway, mod, world.getDamageSources().generic())) {
                         break;
                     }
                 }
@@ -265,10 +264,10 @@ public class NoxUtil {
             HashSet<ArmorItem> armorItems = new HashSet<>();
             int iterated = 0;
 
-            while (freeFirstPass || !resistanceWithinLeeway(damage, total, armor, toughness, lowerLeeway, higherLeeway, modifier) && iterated < 20) {
+            while (freeFirstPass || !resistanceWithinLeeway(mob, damage, total, armor, toughness, lowerLeeway, higherLeeway, modifier, world.getDamageSources().generic()) && iterated < 20) {
                 freeFirstPass = false;
                 for (int i = 0; i < 5; i++) {
-                    double lastLeeway = getLeewayAmount(damage, total, armor, toughness, modifier);
+                    double lastLeeway = getLeewayAmount(mob, damage, total, armor, toughness, modifier, world.getDamageSources().generic());
                     Item item = randomArmor(random);
 
                     if (item instanceof ArmorItem armorItem) {
@@ -290,9 +289,9 @@ public class NoxUtil {
                         armor += armorItem.getProtection();
                         toughness += armorItem.getToughness();
 
-                        double newLeeway = getLeewayAmount(damage, total, armor, toughness, modifier);
+                        double newLeeway = getLeewayAmount(mob, damage, total, armor, toughness, modifier, world.getDamageSources().generic());
                         if ((newLeeway <= 0 && (newLeeway - lastLeeway) >= 0)
-                                || resistanceWithinLeeway(damage, total, armor, toughness, lowerLeeway, higherLeeway, modifier)) {
+                                || resistanceWithinLeeway(mob, damage, total, armor, toughness, lowerLeeway, higherLeeway, modifier, world.getDamageSources().generic())) {
                             if (toRemove != null) {
                                 armorItems.remove(toRemove);
                             }
@@ -307,7 +306,7 @@ public class NoxUtil {
                         }
                     }
 
-                    if (resistanceWithinLeeway(damage, total, armor, toughness, lowerLeeway, higherLeeway, modifier)) {
+                    if (resistanceWithinLeeway(mob, damage, total, armor, toughness, lowerLeeway, higherLeeway, modifier, world.getDamageSources().generic())) {
                         break;
                     }
                 }

@@ -23,6 +23,7 @@ import net.minecraft.entity.damage.DamageTypes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.tag.DamageTypeTags;
+import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 import net.scirave.nox.config.NoxConfig;
 import net.scirave.nox.util.NoxUtil;
@@ -64,7 +65,7 @@ public abstract class EnderDragonEntityMixin extends MobEntityMixin{
 
     @Override
     public void nox$hostileAttributes(EntityType<?> entityType, World world, CallbackInfo ci) {
-        this.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH).addTemporaryModifier(new EntityAttributeModifier("Nox: Enderdragon bonus", NoxConfig.enderDragonBaseHealthMultiplier - 1, EntityAttributeModifier.Operation.MULTIPLY_BASE));
+        this.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH).addTemporaryModifier(new EntityAttributeModifier(Identifier.of("nox:ender_dragon_bonus"), NoxConfig.enderDragonBaseHealthMultiplier - 1, EntityAttributeModifier.Operation.ADD_MULTIPLIED_BASE));
         this.setHealth(this.getMaxHealth());
     }
 

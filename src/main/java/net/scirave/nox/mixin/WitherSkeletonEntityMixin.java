@@ -23,6 +23,7 @@ import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.mob.WitherSkeletonEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.LocalDifficulty;
@@ -76,7 +77,7 @@ public abstract class WitherSkeletonEntityMixin extends AbstractSkeletonEntityMi
         if (NoxConfig.witherSkeletonKnockbackResistanceBonus > 0) {
             EntityAttributeInstance attr = this.getAttributeInstance(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE);
             if (attr != null)
-                attr.addPersistentModifier(new EntityAttributeModifier("Nox: Wither Skeleton bonus", NoxConfig.witherSkeletonKnockbackResistanceBonus, EntityAttributeModifier.Operation.ADDITION));
+                attr.addPersistentModifier(new EntityAttributeModifier(Identifier.of("nox:wither_skeleton_bonus"), NoxConfig.witherSkeletonKnockbackResistanceBonus, EntityAttributeModifier.Operation.ADD_VALUE));
         }
     }
 

@@ -11,6 +11,8 @@
 
 package net.scirave.nox.mixin;
 
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.RangedAttackMob;
@@ -24,6 +26,7 @@ import net.minecraft.entity.projectile.ProjectileUtil;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Position;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -32,22 +35,25 @@ import net.scirave.nox.goals.Nox$FleeSunlightGoal;
 import net.scirave.nox.util.Nox$SwimGoalInterface;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(AbstractSkeletonEntity.class)
 public abstract class AbstractSkeletonEntityMixin extends HostileEntity implements Nox$SwimGoalInterface, RangedAttackMob{
 
+    @Unique
     private Vec3d nox$targetVelocity = Vec3d.ZERO;
+    @Unique
     private Vec3d nox$lastTargetVelocity = Vec3d.ZERO;
+    @Unique
     private Vec3d nox$velocityDifference = Vec3d.ZERO;
 
     protected AbstractSkeletonEntityMixin(EntityType<? extends HostileEntity> entityType, World world) {
         super(entityType, world);
     }
-
-    @Shadow protected abstract PersistentProjectileEntity createArrowProjectile(ItemStack arrow, float damageModifier);
 
     @Inject(method = "initGoals", at = @At("HEAD"))
     public void nox$skeletonInitGoals(CallbackInfo ci) {
@@ -55,26 +61,25 @@ public abstract class AbstractSkeletonEntityMixin extends HostileEntity implemen
         this.goalSelector.add(1, new SwimGoal((AbstractSkeletonEntity) (Object) this));
     }
 
-    @Inject(method = "shootAt", at = @At("HEAD"), cancellable = true )
-    public void nox$skeletonAttack(LivingEntity target, float pullProgress, CallbackInfo ci) {
-        ItemStack itemStack = this.getProjectileType(this.getStackInHand(ProjectileUtil.getHandPossiblyHolding(this, Items.BOW)));
-        PersistentProjectileEntity persistentProjectileEntity = this.createArrowProjectile(itemStack, pullProgress);
-        Position targetPos = target.getPos().add(this.nox$targetVelocity.multiply(10));
-        Position shooterPos = this.getPos();
-        double d = targetPos.getX() - shooterPos.getX();
-        double e = this.getTarget().getY() - persistentProjectileEntity.getY();
-        double f = targetPos.getZ() - shooterPos.getZ();
-        double g = Math.sqrt(d * d + f * f);
-        persistentProjectileEntity.setVelocity(d, e + g * 0.20000000298023224D, f, 2F, (float)(14 - this.getWorld().getDifficulty().getId() * 4));
-        this.playSound(SoundEvents.ENTITY_SKELETON_SHOOT, 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
-        this.getWorld().spawnEntity(persistentProjectileEntity);
-        ci.cancel();
-        return;
+    @ModifyExpressionValue(method = "shootAt", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;getX()D", ordinal = 0))
+    private double addXArrowVelocity(double original, @Local(argsOnly = true) LivingEntity entity) {
+        return NoxConfig.skeletonImprovedAim ? original + this.nox$targetVelocity.x * 10 : original;
     }
 
-    @Inject(method = "tickMovement", at = @At("HEAD"), cancellable = true)
+    @ModifyExpressionValue(method = "shootAt", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;getZ()D", ordinal = 0))
+    private double addZArrowVelocity(double original, @Local(argsOnly = true) LivingEntity entity) {
+        return NoxConfig.skeletonImprovedAim ? original + this.nox$targetVelocity.z * 10 : original;
+    }
+
+    @ModifyArg(method = "shootAt", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/projectile/PersistentProjectileEntity;setVelocity(DDDFF)V"), index = 3)
+    private float changeArrowPower(float original) {
+        return NoxConfig.skeletonShootArrowPower;
+    }
+
+
+    @Inject(method = "tickMovement", at = @At("HEAD"))
     public void nox$onTick(CallbackInfo ci) {
-        if(this.getTarget() != null) {
+        if (NoxConfig.skeletonImprovedAim && this.getTarget() != null) {
             this.nox$velocityDifference = this.nox$velocityDifference.multiply(3).add(this.getTarget().getVelocity().subtract(this.nox$lastTargetVelocity)).multiply(0.25);
             this.nox$targetVelocity = this.nox$targetVelocity.multiply(3).add(this.getTarget().getVelocity().add(this.nox$velocityDifference.multiply(5))).multiply(0.25);
             this.nox$lastTargetVelocity = this.getTarget().getVelocity();
@@ -84,7 +89,7 @@ public abstract class AbstractSkeletonEntityMixin extends HostileEntity implemen
     @Override
     public void nox$modifyAttributes(EntityType<?> entityType, World world, CallbackInfo ci) {
         if (NoxConfig.skeletonSpeedMultiplier > 1) {
-            this.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED).addTemporaryModifier(new EntityAttributeModifier("Nox: Skeleton bonus", NoxConfig.skeletonSpeedMultiplier - 1, EntityAttributeModifier.Operation.MULTIPLY_BASE));
+            this.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED).addTemporaryModifier(new EntityAttributeModifier(Identifier.of("nox:generic_skeleton_bonus"), NoxConfig.skeletonSpeedMultiplier - 1, EntityAttributeModifier.Operation.ADD_MULTIPLIED_BASE));
         }
     }
 
@@ -94,5 +99,7 @@ public abstract class AbstractSkeletonEntityMixin extends HostileEntity implemen
     }
 
 
-    public abstract boolean nox$isAllowedToMine();
+    public boolean nox$isAllowedToMine() {
+        return false;
+    }
 }

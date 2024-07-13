@@ -15,6 +15,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.passive.GolemEntity;
+import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 import net.scirave.nox.config.NoxConfig;
 import org.spongepowered.asm.mixin.Mixin;
@@ -26,9 +27,9 @@ public abstract class GolemEntityMixin extends MobEntityMixin {
     @Override
     public void nox$modifyAttributes(EntityType<?> entityType, World world, CallbackInfo ci) {
         if (NoxConfig.buffGolems) {
-            this.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH).addTemporaryModifier(new EntityAttributeModifier("Nox: Golem bonus", NoxConfig.golemBaseHealthMultiplier - 1, EntityAttributeModifier.Operation.MULTIPLY_BASE));
+            this.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH).addTemporaryModifier(new EntityAttributeModifier(Identifier.of("nox:golem_bonus"), NoxConfig.golemBaseHealthMultiplier - 1, EntityAttributeModifier.Operation.ADD_MULTIPLIED_BASE));
             this.setHealth(this.getMaxHealth());
-            this.getAttributeInstance(EntityAttributes.GENERIC_FOLLOW_RANGE).addTemporaryModifier(new EntityAttributeModifier("Nox: Golem bonus", NoxConfig.golemFollowRangeMultiplier - 1, EntityAttributeModifier.Operation.MULTIPLY_BASE));
+            this.getAttributeInstance(EntityAttributes.GENERIC_FOLLOW_RANGE).addTemporaryModifier(new EntityAttributeModifier(Identifier.of("nox:golem_bonus"), NoxConfig.golemFollowRangeMultiplier - 1, EntityAttributeModifier.Operation.ADD_MULTIPLIED_BASE));
         }
     }
 }

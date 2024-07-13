@@ -11,6 +11,7 @@
 
 package net.scirave.nox.mixin;
 
+import net.minecraft.component.EnchantmentEffectComponentTypes;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.CrossbowUser;
@@ -55,7 +56,7 @@ public class CrossbowAttackGoalMixin {
         if (target == null) return;
 
         Hand hand = ProjectileUtil.getHandPossiblyHolding(this.actor, Items.CROSSBOW);
-        if (hand != null && EnchantmentHelper.getLevel(Enchantments.PIERCING, this.actor.getStackInHand(hand)) > 0)
+        if (hand != null && EnchantmentHelper.hasAnyEnchantmentsWith(this.actor.getStackInHand(hand), EnchantmentEffectComponentTypes.PROJECTILE_PIERCING))
             return;
 
         DamageSource fakeSource = actor.getWorld().getDamageSources().mobProjectile(actor, actor);

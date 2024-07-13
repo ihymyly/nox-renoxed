@@ -37,7 +37,7 @@ public abstract class IronGolemEntityMixin extends GolemEntityMixin {
 
     private boolean nox$canSweepAttack = true;
 
-    @Inject(method = "tryAttack", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/passive/IronGolemEntity;applyDamageEffects(Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/entity/Entity;)V"))
+    @Inject(method = "tryAttack", at = @At(value = "INVOKE", target = "Lnet/minecraft/enchantment/EnchantmentHelper;onTargetDamaged(Lnet/minecraft/server/world/ServerWorld;Lnet/minecraft/entity/Entity;Lnet/minecraft/entity/damage/DamageSource;)V"))
     public void nox$ironGolemSweepAttack(Entity target, CallbackInfoReturnable<Boolean> cir) {
         if (NoxConfig.ironGolemsHaveASweepAttack) {
             if (this.nox$canSweepAttack) {
