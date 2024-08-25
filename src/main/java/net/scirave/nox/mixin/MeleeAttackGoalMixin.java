@@ -29,16 +29,13 @@ public abstract class MeleeAttackGoalMixin {
     @Final
     protected PathAwareEntity mob;
 
-    @Shadow
-    protected abstract double getSquaredMaxAttackDistance(LivingEntity entity);
-
     @Inject(method = "canStart", at = @At("HEAD"), cancellable = true)
     public void nox$meleeUpdateCheck(CallbackInfoReturnable<Boolean> cir) {
         LivingEntity livingEntity = this.mob.getTarget();
         if (livingEntity == null) {
             cir.setReturnValue(false);
         } else if (!livingEntity.isAlive()) {
-            if (this.getSquaredMaxAttackDistance(livingEntity) >= this.mob.squaredDistanceTo(livingEntity.getX(), livingEntity.getY(), livingEntity.getZ())) {
+            if (this.mob.isInAttackRange(livingEntity)) {
                 cir.setReturnValue(true);
             }
         }
@@ -50,10 +47,9 @@ public abstract class MeleeAttackGoalMixin {
         if (livingEntity == null) {
             cir.setReturnValue(false);
         } else if (!livingEntity.isAlive()) {
-            if (this.getSquaredMaxAttackDistance(livingEntity) >= this.mob.squaredDistanceTo(livingEntity.getX(), livingEntity.getY(), livingEntity.getZ())) {
+            if (this.mob.isInAttackRange(livingEntity)) {
                 cir.setReturnValue(!(livingEntity instanceof PlayerEntity) || !livingEntity.isSpectator() && !((PlayerEntity) livingEntity).isCreative());
             }
         }
     }
-
 }

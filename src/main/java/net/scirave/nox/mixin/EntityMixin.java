@@ -60,6 +60,8 @@ public abstract class EntityMixin {
     @Shadow
     public abstract EntityType<?> getType();
 
+    @Shadow public abstract Vec3d getVelocity();
+
     @Inject(method = "isInvulnerableTo", at = @At("HEAD"), cancellable = true)
     public void nox$invulnerableCheck(DamageSource source, CallbackInfoReturnable<Boolean> cir) {
         // Overridden

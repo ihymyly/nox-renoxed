@@ -84,14 +84,14 @@ public abstract class WitchEntityMixin extends HostileEntityMixin {
         // No slowdown!
     }
 
-    @ModifyArg(method = "attack", at = @At(value = "INVOKE", target = "Lnet/minecraft/potion/PotionUtil;setPotion(Lnet/minecraft/item/ItemStack;Lnet/minecraft/potion/Potion;)Lnet/minecraft/item/ItemStack;"))
+    @ModifyArg(method = "shootAt", at = @At(value = "INVOKE", target = "Lnet/minecraft/potion/PotionUtil;setPotion(Lnet/minecraft/item/ItemStack;Lnet/minecraft/potion/Potion;)Lnet/minecraft/item/ItemStack;"))
     public ItemStack nox$witchLingeringPotions(ItemStack original) {
         if (NoxConfig.witchesUseLingeringPotions)
             return new ItemStack(Items.LINGERING_POTION);
         return original;
     }
 
-    @ModifyArg(method = "attack", at = @At(value = "INVOKE", target = "Lnet/minecraft/potion/PotionUtil;setPotion(Lnet/minecraft/item/ItemStack;Lnet/minecraft/potion/Potion;)Lnet/minecraft/item/ItemStack;"))
+    @ModifyArg(method = "shootAt", at = @At(value = "INVOKE", target = "Lnet/minecraft/potion/PotionUtil;setPotion(Lnet/minecraft/item/ItemStack;Lnet/minecraft/potion/Potion;)Lnet/minecraft/item/ItemStack;"))
     public Potion nox$witchUpgradedSlowness(Potion original) {
         if (NoxConfig.witchesUseStrongerSlowness && Potions.SLOWNESS.equals(original)) {
             return Potions.STRONG_SLOWNESS;
@@ -108,12 +108,12 @@ public abstract class WitchEntityMixin extends HostileEntityMixin {
             cir.setReturnValue(!NoxConfig.witchesResistProjectiles);
     }
 
-    @Redirect(method = "attack", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/mob/WitchEntity;isDrinking()Z"))
+    @Redirect(method = "shootAt", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/mob/WitchEntity;isDrinking()Z"))
     public boolean nox$witchDrinkWhileAttack(WitchEntity instance) {
         return false;
     }
 
-    @ModifyArgs(method = "attack", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/projectile/thrown/PotionEntity;setVelocity(DDDFF)V"))
+    @ModifyArgs(method = "shootAt", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/projectile/thrown/PotionEntity;setVelocity(DDDFF)V"))
     public void nox$witchBetterAim(Args args) {
         args.set(1, (double) args.get(1) * 0.50);
         args.set(3, (float) ((float) args.get(3) + 0.25));
