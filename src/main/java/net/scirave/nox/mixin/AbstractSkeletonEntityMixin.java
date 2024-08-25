@@ -25,6 +25,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.Position;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.scirave.nox.config.NoxConfig;
 import net.scirave.nox.goals.Nox$FleeSunlightGoal;
@@ -36,7 +37,11 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(AbstractSkeletonEntity.class)
-public abstract class AbstractSkeletonEntityMixin extends HostileEntity implements Nox$SwimGoalInterface, RangedAttackMob {
+public abstract class AbstractSkeletonEntityMixin extends HostileEntity implements Nox$SwimGoalInterface, RangedAttackMob{
+
+    private Vec3d nox$targetVelocity = Vec3d.ZERO;
+    private Vec3d nox$lastTargetVelocity = Vec3d.ZERO;
+    private Vec3d nox$velocityDifference = Vec3d.ZERO;
 
     protected AbstractSkeletonEntityMixin(EntityType<? extends HostileEntity> entityType, World world) {
         super(entityType, world);
@@ -50,23 +55,31 @@ public abstract class AbstractSkeletonEntityMixin extends HostileEntity implemen
         this.goalSelector.add(1, new SwimGoal((AbstractSkeletonEntity) (Object) this));
     }
 
-    @Inject(method = "attack", at = @At("HEAD"), cancellable = true )
+     @Inject(method = "shootAt", at = @At("HEAD"), cancellable = true )
     public void nox$skeletonAttack(LivingEntity target, float pullProgress, CallbackInfo ci) {
         ItemStack itemStack = this.getProjectileType(this.getStackInHand(ProjectileUtil.getHandPossiblyHolding(this, Items.BOW)));
         PersistentProjectileEntity persistentProjectileEntity = this.createArrowProjectile(itemStack, pullProgress);
-        Position targetPos = target.getPos().add(target.getVelocity().multiply(20));
-        Position shooterPos = this.getPos().add(this.getVelocity().multiply(20));
+        Position targetPos = target.getPos().add(this.nox$targetVelocity.multiply(10));
+        Position shooterPos = this.getPos();
         double d = targetPos.getX() - shooterPos.getX();
-        double e = target.getBodyY(0.3333333333333333D) - persistentProjectileEntity.getY();
+        double e = this.getTarget().getY() - persistentProjectileEntity.getY();
         double f = targetPos.getZ() - shooterPos.getZ();
         double g = Math.sqrt(d * d + f * f);
-        persistentProjectileEntity.setVelocity(d, e + g * 0.20000000298023224D, f, 1.6F, (float)(14 - this.getWorld().getDifficulty().getId() * 4));
+        persistentProjectileEntity.setVelocity(d, e + g * 0.20000000298023224D, f, 2F, (float)(14 - this.getWorld().getDifficulty().getId() * 4));
         this.playSound(SoundEvents.ENTITY_SKELETON_SHOOT, 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
         this.getWorld().spawnEntity(persistentProjectileEntity);
         ci.cancel();
+        return;
     }
 
-    public abstract void nox$onTick(CallbackInfo ci);
+    @Inject(method = "tickMovement", at = @At("HEAD"), cancellable = true)
+    public void nox$onTick(CallbackInfo ci) {
+        if(this.getTarget() != null) {
+            this.nox$velocityDifference = this.nox$velocityDifference.multiply(3).add(this.getTarget().getVelocity().subtract(this.nox$lastTargetVelocity)).multiply(0.25);
+            this.nox$targetVelocity = this.nox$targetVelocity.multiply(3).add(this.getTarget().getVelocity().add(this.nox$velocityDifference.multiply(5))).multiply(0.25);
+            this.nox$lastTargetVelocity = this.getTarget().getVelocity();
+        }
+    }
 
     @Override
     public void nox$modifyAttributes(EntityType<?> entityType, World world, CallbackInfo ci) {
