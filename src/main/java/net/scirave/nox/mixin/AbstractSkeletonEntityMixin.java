@@ -93,6 +93,5 @@ public abstract class AbstractSkeletonEntityMixin extends HostileEntity implemen
         return NoxConfig.skeletonsCanSwim;
     }
 
-
     public abstract boolean nox$isAllowedToMine();
 }
